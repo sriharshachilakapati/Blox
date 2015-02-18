@@ -23,6 +23,8 @@ public class Blox extends Game
         PLAYER = Model.load("resources/player.obj");
         FLOOR  = Model.load("resources/floor.obj");
 
+        ControllerMapping.mapController();
+
         setGameState(new PlayState());
     }
 
