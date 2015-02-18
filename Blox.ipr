@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="CompilerConfiguration">
-    <option name="DEFAULT_COMPILER" />
+    <option name="DEFAULT_COMPILER" value="Javac" />
     <resourceExtensions />
     <wildcardResourcePatterns>
       <entry name="!?*.java" />
@@ -42,7 +42,9 @@
     <ConfirmationsSetting value="0" id="Remove" />
   </component>
   <component name="ProjectModuleManager">
-    <modules />
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/Blox.iml" filepath="$PROJECT_DIR$/Blox.iml" />
+    </modules>
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_1_6" assert-keyword="true" jdk-15="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
@@ -148,6 +150,22 @@
       <method />
     </configuration>
     <list size="0" />
+  </component>
+  <component name="VcsDirectoryMappings">
+    <mapping directory="" vcs="Git" />
+  </component>
+  <component name="libraryTable">
+    <library name="SilenceEngine">
+      <CLASSES>
+        <root url="jar://$PROJECT_DIR$/libs/SilenceEngine.jar!/" />
+        <root url="jar://$PROJECT_DIR$/libs/lwjgl.jar!/" />
+        <root url="jar://$PROJECT_DIR$/libs/jorbis-0.0.17-2.jar!/" />
+        <root url="jar://$PROJECT_DIR$/libs/jogg-0.0.7.jar!/" />
+        <root url="jar://$PROJECT_DIR$/libs/lwjgl-natives.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES />
+    </library>
   </component>
   <component name="masterDetails">
     <states>
