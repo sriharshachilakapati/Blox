@@ -1,9 +1,9 @@
 package com.shc.blox.entities;
 
 import com.shc.blox.Blox;
-import com.shc.silenceengine.entity.ModelEntity;
-import com.shc.silenceengine.geom3d.Cuboid;
 import com.shc.silenceengine.math.Vector3;
+import com.shc.silenceengine.math.geom3d.Cuboid;
+import com.shc.silenceengine.scene.entity.ModelEntity;
 
 /**
  * @author Sri Harsha Chilakapati

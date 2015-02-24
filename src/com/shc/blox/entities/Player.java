@@ -4,12 +4,12 @@ import com.shc.blox.Blox;
 import com.shc.blox.ControllerMapping;
 import com.shc.blox.states.PlayState;
 import com.shc.silenceengine.core.Game;
-import com.shc.silenceengine.entity.Entity3D;
-import com.shc.silenceengine.entity.ModelEntity;
-import com.shc.silenceengine.geom3d.Cuboid;
 import com.shc.silenceengine.input.Controller;
 import com.shc.silenceengine.input.Keyboard;
 import com.shc.silenceengine.math.Vector3;
+import com.shc.silenceengine.math.geom3d.Cuboid;
+import com.shc.silenceengine.scene.entity.Entity3D;
+import com.shc.silenceengine.scene.entity.ModelEntity;
 
 /**
  * @author Sri Harsha Chilakapati
