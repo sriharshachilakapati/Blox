@@ -1,6 +1,6 @@
 package com.shc.blox.states;
 
-import com.shc.blox.ControllerMapping;
+import com.shc.blox.entities.Cone;
 import com.shc.blox.entities.Floor;
 import com.shc.blox.entities.Player;
 import com.shc.silenceengine.collision.colliders.DynamicSceneCollider3D;
@@ -11,7 +11,6 @@ import com.shc.silenceengine.core.GameState;
 import com.shc.silenceengine.graphics.Batcher;
 import com.shc.silenceengine.graphics.Color;
 import com.shc.silenceengine.graphics.cameras.PerspCam;
-import com.shc.silenceengine.input.Controller;
 import com.shc.silenceengine.input.Keyboard;
 import com.shc.silenceengine.math.Vector3;
 import com.shc.silenceengine.scene.Scene;
@@ -24,8 +23,11 @@ import com.shc.silenceengine.utils.FileUtils;
 public class PlayState extends GameState
 {
     public static Scene scene;
-    public static PerspCam camera;
+    public PerspCam camera;
+    public PerspCam camera2;
     public static Player player;
+
+    public static Cone cameraCone;
 
     private PointLight camLight;
 
@@ -34,6 +36,7 @@ public class PlayState extends GameState
     public PlayState()
     {
         camera = new PerspCam().initProjection(70, Display.getAspectRatio(), 0.01f, 100f);
+        camera2 = new PerspCam().initProjection(70, Display.getAspectRatio(), 0.01f, 100f);
 
         scene = new Scene();
         scene.addComponent(camLight = new PointLight(new Vector3(), Color.WHITE));
@@ -43,11 +46,11 @@ public class PlayState extends GameState
         collider.setScene(scene);
 
         collider.register(Player.class, Floor.class);
-
-        camera.setPosition(new Vector3(0, 4, 4));
-        camera.lookAt(Vector3.ZERO);
+        collider.register(Cone.class, Player.class);
 
         loadLevel("levels/level1.lvl");
+
+        cameraCone = new Cone(player.getPosition(), Cone.Direction.NORTH);
     }
 
     private void loadLevel(String filename)
@@ -70,7 +73,27 @@ public class PlayState extends GameState
                 switch (ch)
                 {
                     case 'P': scene.addChild(player = new Player(new Vector3(x, 5, z)));
-                    case 'F': scene.addChild(new Floor(new Vector3(x, 0, z)));
+                    case 'F': scene.addChild(new Floor(new Vector3(x, 0, z))); break;
+
+                    case 'N':
+                        scene.addChild(new Cone(new Vector3(x, 1, z), Cone.Direction.NORTH));
+                        scene.addChild(new Floor(new Vector3(x, 0, z)));
+                        break;
+
+                    case 'E':
+                        scene.addChild(new Cone(new Vector3(x, 1, z), Cone.Direction.EAST));
+                        scene.addChild(new Floor(new Vector3(x, 0, z)));
+                        break;
+
+                    case 'W':
+                        scene.addChild(new Cone(new Vector3(x, 1, z), Cone.Direction.WEST));
+                        scene.addChild(new Floor(new Vector3(x, 0, z)));
+                        break;
+
+                    case 'S':
+                        scene.addChild(new Cone(new Vector3(x, 1, z), Cone.Direction.SOUTH));
+                        scene.addChild(new Floor(new Vector3(x, 0, z)));
+                        break;
                 }
 
                 x++;
@@ -92,29 +115,54 @@ public class PlayState extends GameState
         scene.update(delta);
         collider.checkCollisions();
 
-        Vector3 temp = Vector3.REUSABLE_STACK.pop();
-        camera.setPosition(temp.set(player.getPosition()).addSelf(0, 4, 3));
+        switch (cameraCone.getDirection())
+        {
+            case NORTH:
+                camera.getRotation().set();
+                camera.setPosition(player.getPosition());
+                camera.moveUp(5);
+                camera.moveBackward(5);
+                camera.rotateX(-45);
+                break;
+
+            case SOUTH:
+                camera.getRotation().set();
+                camera.setPosition(player.getPosition());
+                camera.moveUp(5);
+                camera.moveForward(5);
+                camera.rotateY(180);
+                camera.rotateX(-45);
+                break;
+
+            case EAST:
+                camera.getRotation().set();
+                camera.setPosition(player.getPosition());
+                camera.moveUp(5);
+                camera.moveLeft(5);
+                camera.rotateY(-90);
+                camera.rotateX(-45);
+                break;
+
+            case WEST:
+                camera.getRotation().set();
+                camera.setPosition(player.getPosition());
+                camera.moveUp(5);
+                camera.moveRight(5);
+                camera.rotateY(90);
+                camera.rotateX(-45);
+                break;
+        }
+
         camLight.setPosition(camera.getPosition());
-        Vector3.REUSABLE_STACK.push(temp);
 
-        camera.rotateX(-Controller.getAxe(ControllerMapping.AXE_RS_Y, 0));
-        camera.rotateY(-Controller.getAxe(ControllerMapping.AXE_RS_X, 0));
-
-        if (Keyboard.isPressed(Keyboard.KEY_UP))
-            camera.rotateX(1);
-        if (Keyboard.isPressed(Keyboard.KEY_DOWN))
-            camera.rotateX(-1);
-
-        if (Keyboard.isPressed(Keyboard.KEY_LEFT))
-            camera.rotateY(1);
-        if (Keyboard.isPressed(Keyboard.KEY_RIGHT))
-            camera.rotateY(-1);
+        // Smoothly interpolate the camera
+        camera2.lerp(camera, delta * 3);
     }
 
     @Override
     public void render(float delta, Batcher batcher)
     {
-        camera.apply();
+        camera2.apply();
         scene.render(delta, batcher);
     }
 
@@ -122,5 +170,6 @@ public class PlayState extends GameState
     public void resize()
     {
         camera.initProjection(70, Display.getAspectRatio(), 0.01f, 100f);
+        camera2.initProjection(70, Display.getAspectRatio(), 0.01f, 100f);
     }
 }

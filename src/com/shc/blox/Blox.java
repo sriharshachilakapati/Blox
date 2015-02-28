@@ -13,15 +13,18 @@ public class Blox extends Game
 {
     public static Model PLAYER;
     public static Model FLOOR;
+    public static Model CONE;
 
     @Override
     public void init()
     {
         Display.setTitle("Blox - SilenceEngine 3D Demo");
+//        Display.setFullScreen(true);
         Display.setClearColor(new Color(0.1f, 0.1f, 0.2f));
 
         PLAYER = Model.load("resources/player.obj");
         FLOOR  = Model.load("resources/floor.obj");
+        CONE   = Model.load("resources/cone.obj");
 
         ControllerMapping.mapController();
 

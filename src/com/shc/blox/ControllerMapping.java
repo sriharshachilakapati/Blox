@@ -17,8 +17,6 @@ public final class ControllerMapping
 
     public static int AXE_LS_X;
     public static int AXE_LS_Y;
-    public static int AXE_RS_X;
-    public static int AXE_RS_Y;
 
     public static void mapController()
     {
@@ -43,8 +41,6 @@ public final class ControllerMapping
 
                 AXE_LS_X = Controller.GENERIC_AXE_LEFT_X;
                 AXE_LS_Y = Controller.GENERIC_AXE_LEFT_Y;
-                AXE_RS_X = Controller.GENERIC_AXE_RIGHT_X;
-                AXE_RS_Y = Controller.GENERIC_AXE_RIGHT_Y;
                 break;
 
             case XBOX:
@@ -58,8 +54,6 @@ public final class ControllerMapping
 
                 AXE_LS_X = Controller.XBOX_LEFT_STICKER_X;
                 AXE_LS_Y = Controller.XBOX_LEFT_STICKER_Y;
-                AXE_RS_X = Controller.XBOX_RIGHT_STICKER_X;
-                AXE_RS_Y = Controller.XBOX_RIGHT_STICKER_Y;
                 break;
         }
     }
