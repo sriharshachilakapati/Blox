@@ -1,5 +1,6 @@
 package com.shc.blox.states;
 
+import com.shc.blox.Direction;
 import com.shc.blox.entities.Cone;
 import com.shc.blox.entities.Floor;
 import com.shc.blox.entities.Player;
@@ -27,7 +28,7 @@ public class PlayState extends GameState
     public PerspCam camera2;
     public static Player player;
 
-    public static Cone cameraCone;
+    public static Direction cameraDirection;
 
     private PointLight camLight;
 
@@ -50,7 +51,7 @@ public class PlayState extends GameState
 
         loadLevel("levels/level1.lvl");
 
-        cameraCone = new Cone(player.getPosition(), Cone.Direction.NORTH);
+        cameraDirection = Direction.NORTH;
     }
 
     private void loadLevel(String filename)
@@ -76,22 +77,22 @@ public class PlayState extends GameState
                     case 'F': scene.addChild(new Floor(new Vector3(x, 0, z))); break;
 
                     case 'N':
-                        scene.addChild(new Cone(new Vector3(x, 1, z), Cone.Direction.NORTH));
+                        scene.addChild(new Cone(new Vector3(x, 1, z), Direction.NORTH));
                         scene.addChild(new Floor(new Vector3(x, 0, z)));
                         break;
 
                     case 'E':
-                        scene.addChild(new Cone(new Vector3(x, 1, z), Cone.Direction.EAST));
+                        scene.addChild(new Cone(new Vector3(x, 1, z), Direction.EAST));
                         scene.addChild(new Floor(new Vector3(x, 0, z)));
                         break;
 
                     case 'W':
-                        scene.addChild(new Cone(new Vector3(x, 1, z), Cone.Direction.WEST));
+                        scene.addChild(new Cone(new Vector3(x, 1, z), Direction.WEST));
                         scene.addChild(new Floor(new Vector3(x, 0, z)));
                         break;
 
                     case 'S':
-                        scene.addChild(new Cone(new Vector3(x, 1, z), Cone.Direction.SOUTH));
+                        scene.addChild(new Cone(new Vector3(x, 1, z), Direction.SOUTH));
                         scene.addChild(new Floor(new Vector3(x, 0, z)));
                         break;
                 }
@@ -115,7 +116,7 @@ public class PlayState extends GameState
         scene.update(delta);
         collider.checkCollisions();
 
-        switch (cameraCone.getDirection())
+        switch (cameraDirection)
         {
             case NORTH:
                 camera.getRotation().set();

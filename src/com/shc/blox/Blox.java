@@ -19,8 +19,10 @@ public class Blox extends Game
     public void init()
     {
         Display.setTitle("Blox - SilenceEngine 3D Demo");
-//        Display.setFullScreen(true);
         Display.setClearColor(new Color(0.1f, 0.1f, 0.2f));
+
+        Display.setFullScreen(true);
+        Display.hideCursor();
 
         PLAYER = Model.load("resources/player.obj");
         FLOOR  = Model.load("resources/floor.obj");

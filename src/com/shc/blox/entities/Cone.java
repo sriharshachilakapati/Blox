@@ -1,6 +1,7 @@
 package com.shc.blox.entities;
 
 import com.shc.blox.Blox;
+import com.shc.blox.Direction;
 import com.shc.blox.states.PlayState;
 import com.shc.silenceengine.math.Vector3;
 import com.shc.silenceengine.math.geom3d.Cuboid;
@@ -12,11 +13,6 @@ import com.shc.silenceengine.scene.entity.ModelEntity;
  */
 public class Cone extends ModelEntity
 {
-    public static enum Direction
-    {
-        NORTH, EAST, SOUTH, WEST
-    }
-
     private Direction direction;
 
     public Cone(Vector3 position, Direction direction)
@@ -63,12 +59,7 @@ public class Cone extends ModelEntity
                     break;
             }
 
-            PlayState.cameraCone = this;
+            PlayState.cameraDirection = direction;
         }
-    }
-
-    public Direction getDirection()
-    {
-        return direction;
     }
 }
