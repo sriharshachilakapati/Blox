@@ -154,10 +154,10 @@ public class PlayState extends GameState
                 break;
         }
 
-        camLight.setPosition(camera.getPosition());
-
         // Smoothly interpolate the camera
         camera2.slerp(camera, delta * 3);
+
+        camLight.setPosition(camera2.getPosition());
     }
 
     @Override
