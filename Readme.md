@@ -4,7 +4,13 @@ Blox is a 3D Platformer game made using [SilenceEngine](https://github.com/sriha
 
 ## Screenshots
 
-![Play screen](http://i.imgur.com/Mktlu2e.png)
+__GamePlay GIF:__
+
+![Play screen](http://i.imgur.com/qSNvzPa.gif)
+
+__Youtube Video:__
+
+[![Youtube game play video](http://img.youtube.com/vi/XfOYCTV72wk/0.jpg)](http://www.youtube.com/watch?v=XfOYCTV72wk)
 
 ## Licence
 
