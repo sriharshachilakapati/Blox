@@ -36,8 +36,8 @@ public class PlayState extends GameState
 
     public PlayState()
     {
-        camera = new PerspCam().initProjection(70, Display.getAspectRatio(), 0.01f, 100f);
-        camera2 = new PerspCam().initProjection(70, Display.getAspectRatio(), 0.01f, 100f);
+        camera = new PerspCam().initProjection(70, Display.getAspectRatio(), 1, 100);
+        camera2 = new PerspCam().initProjection(70, Display.getAspectRatio(), 1, 100);
 
         scene = new Scene();
         scene.addComponent(camLight = new PointLight(new Vector3(), Color.WHITE));
@@ -170,7 +170,7 @@ public class PlayState extends GameState
     @Override
     public void resize()
     {
-        camera.initProjection(70, Display.getAspectRatio(), 0.01f, 100f);
-        camera2.initProjection(70, Display.getAspectRatio(), 0.01f, 100f);
+        camera.initProjection(70, Display.getAspectRatio(), 1, 100);
+        camera2.initProjection(70, Display.getAspectRatio(), 1, 100);
     }
 }
