@@ -19,9 +19,6 @@ public class Player extends ModelEntity
     private boolean canJump;
     private boolean inFall;
 
-    public static Vector3 FORWARD;
-    public static Vector3 RIGHT;
-
     private float jumpTo;
 
     public Player(Vector3 position)
@@ -31,10 +28,6 @@ public class Player extends ModelEntity
 
         canJump = false;
         inFall = true;
-
-        FORWARD = new Vector3(Vector3.AXIS_Z).negateSelf();
-        RIGHT   = new Vector3(Vector3.AXIS_X);
-
     }
 
     @Override
@@ -49,21 +42,21 @@ public class Player extends ModelEntity
 
         // Simple movement on the maze
         if (Keyboard.isPressed('W') || Controller.isPressed(ControllerMapping.BUTTON_DPAD_UP, 0))
-            getVelocity().addSelf(temp.set(FORWARD).normalizeSelf().scaleSelf(delta * 3.75f));
+            getVelocity().addSelf(temp.set(PlayState.camera.getForward()).normalizeSelf().scaleSelf(delta * 3.75f));
 
         if (Keyboard.isPressed('S') || Controller.isPressed(ControllerMapping.BUTTON_DPAD_DOWN, 0))
-            getVelocity().addSelf(temp.set(FORWARD).normalizeSelf().scaleSelf(delta * -3.75f));
+            getVelocity().addSelf(temp.set(PlayState.camera.getForward()).normalizeSelf().scaleSelf(delta * -3.75f));
 
         if (Keyboard.isPressed('A') || Controller.isPressed(ControllerMapping.BUTTON_DPAD_LEFT, 0))
-            getVelocity().addSelf(temp.set(RIGHT).normalizeSelf().scaleSelf(delta * -3.75f));
+            getVelocity().addSelf(temp.set(PlayState.camera.getRight()).normalizeSelf().scaleSelf(delta * -3.75f));
 
         if (Keyboard.isPressed('D') || Controller.isPressed(ControllerMapping.BUTTON_DPAD_RIGHT, 0))
-            getVelocity().addSelf(temp.set(RIGHT).normalizeSelf().scaleSelf(delta * 3.75f));
+            getVelocity().addSelf(temp.set(PlayState.camera.getRight()).normalizeSelf().scaleSelf(delta * 3.75f));
 
         // Controller axes
-        getVelocity().addSelf(temp.set(FORWARD).normalizeSelf()
+        getVelocity().addSelf(temp.set(PlayState.camera.getForward()).normalizeSelf()
                                   .scaleSelf(Controller.getAxe(ControllerMapping.AXE_LS_Y, 0) * delta * -3.75f));
-        getVelocity().addSelf(temp.set(RIGHT).normalizeSelf()
+        getVelocity().addSelf(temp.set(PlayState.camera.getRight()).normalizeSelf()
                                   .scaleSelf(Controller.getAxe(ControllerMapping.AXE_LS_X, 0) * delta * 3.75f));
 
         Vector3.REUSABLE_STACK.push(temp);

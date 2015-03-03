@@ -24,11 +24,11 @@ import com.shc.silenceengine.utils.FileUtils;
 public class PlayState extends GameState
 {
     public static Scene scene;
-    public PerspCam camera;
-    public PerspCam camera2;
+    public static PerspCam camera;
     public static Player player;
-
     public static Direction cameraDirection;
+
+    private PerspCam camera2;
 
     private PointLight camLight;
 

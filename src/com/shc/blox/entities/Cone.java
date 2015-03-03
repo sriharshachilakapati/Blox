@@ -35,31 +35,6 @@ public class Cone extends ModelEntity
     public void collision(Entity3D other)
     {
         if (other instanceof Player)
-        {
-            switch (direction)
-            {
-                case NORTH:
-                    Player.FORWARD.set(Vector3.AXIS_Z).negateSelf();
-                    Player.RIGHT.set(Vector3.AXIS_X);
-                    break;
-
-                case SOUTH:
-                    Player.FORWARD.set(Vector3.AXIS_Z);
-                    Player.RIGHT.set(Vector3.AXIS_X).negateSelf();
-                    break;
-
-                case WEST:
-                    Player.FORWARD.set(Vector3.AXIS_X).negateSelf();
-                    Player.RIGHT.set(Vector3.AXIS_Z).negateSelf();
-                    break;
-
-                case EAST:
-                    Player.FORWARD.set(Vector3.AXIS_X);
-                    Player.RIGHT.set(Vector3.AXIS_Z);
-                    break;
-            }
-
             PlayState.cameraDirection = direction;
-        }
     }
 }
