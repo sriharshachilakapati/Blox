@@ -73,7 +73,7 @@ public class PlayState extends GameState
             {
                 switch (ch)
                 {
-                    case 'P': scene.addChild(player = new Player(new Vector3(x, 5, z)));
+                    case 'P': scene.addChild(player = new Player(new Vector3(x, 10, z)));
                     case 'F': scene.addChild(new Floor(new Vector3(x, 0, z))); break;
 
                     case 'N':
@@ -100,7 +100,7 @@ public class PlayState extends GameState
                 x++;
             }
 
-            z--;
+            z++;
             x = 0;
         }
 

@@ -33,7 +33,7 @@ public class Player extends ModelEntity
     @Override
     public void update(float delta)
     {
-        if (Keyboard.isClicked('R') || Controller.isClicked(ControllerMapping.BUTTON_START, 0))
+        if (Keyboard.isClicked('R') || getY() < -10 || Controller.isClicked(ControllerMapping.BUTTON_START, 0))
             Game.setGameState(new PlayState());
 
         getVelocity().set(0, 0, 0);
