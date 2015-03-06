@@ -1,17 +1,25 @@
+# P stands for Player
+# F stands for Floor
+# N stands for Cone pointing North
+# E stands for Cone pointing East
+# W stands for Cone pointing West
+# S stands for Cone pointing South
+# Small letters are the same, except that they are a bit high
 
-    FF               FFFFFFFFFFFFW
+
+    FF               ffFFFFFFFFFFW
     FF
-    FF   FFFFFFFFF
+    FF   FFFFFFFffFF
     FF
     FF
-    FF            FFFFFFF    FF
+    ff            FFFFFFF    FF
     FF
     FF
     FF       FFF       FFF
              FFF        FFF
 
     FF
-    FF        SFFFFFFF    FFFFE
+    ff        SFFFFFFF    FFFFE
     FF
     FF
     FF                          FF

@@ -42,22 +42,22 @@ public class Player extends ModelEntity
 
         // Simple movement on the maze
         if (Keyboard.isPressed('W') || Controller.isPressed(ControllerMapping.BUTTON_DPAD_UP, 0))
-            getVelocity().addSelf(temp.set(PlayState.camera.getForward()).normalizeSelf().scaleSelf(delta * 3.75f));
+            getVelocity().addSelf(temp.set(PlayState.camera.getForward()).normalizeSelf().scaleSelf(delta * 4));
 
         if (Keyboard.isPressed('S') || Controller.isPressed(ControllerMapping.BUTTON_DPAD_DOWN, 0))
-            getVelocity().addSelf(temp.set(PlayState.camera.getForward()).normalizeSelf().scaleSelf(delta * -3.75f));
+            getVelocity().addSelf(temp.set(PlayState.camera.getForward()).normalizeSelf().scaleSelf(delta * -4));
 
         if (Keyboard.isPressed('A') || Controller.isPressed(ControllerMapping.BUTTON_DPAD_LEFT, 0))
-            getVelocity().addSelf(temp.set(PlayState.camera.getRight()).normalizeSelf().scaleSelf(delta * -3.75f));
+            getVelocity().addSelf(temp.set(PlayState.camera.getRight()).normalizeSelf().scaleSelf(delta * -4));
 
         if (Keyboard.isPressed('D') || Controller.isPressed(ControllerMapping.BUTTON_DPAD_RIGHT, 0))
-            getVelocity().addSelf(temp.set(PlayState.camera.getRight()).normalizeSelf().scaleSelf(delta * 3.75f));
+            getVelocity().addSelf(temp.set(PlayState.camera.getRight()).normalizeSelf().scaleSelf(delta * 4));
 
         // Controller axes
         getVelocity().addSelf(temp.set(PlayState.camera.getForward()).normalizeSelf()
-                                  .scaleSelf(Controller.getAxe(ControllerMapping.AXE_LS_Y, 0) * delta * -3.75f));
+                                  .scaleSelf(Controller.getAxe(ControllerMapping.AXE_LS_Y, 0) * delta * -4));
         getVelocity().addSelf(temp.set(PlayState.camera.getRight()).normalizeSelf()
-                                  .scaleSelf(Controller.getAxe(ControllerMapping.AXE_LS_X, 0) * delta * 3.75f));
+                                  .scaleSelf(Controller.getAxe(ControllerMapping.AXE_LS_X, 0) * delta * 4));
 
         Vector3.REUSABLE_STACK.push(temp);
 
@@ -66,12 +66,12 @@ public class Player extends ModelEntity
         {
             canJump = false;
             inFall = false;
-            jumpTo = 3.5f;
+            jumpTo = 3;
         }
 
         if (!canJump && !inFall)
         {
-            getVelocity().addSelf(0, delta * 10, 0);
+            getVelocity().addSelf(0, delta * 8, 0);
 
             if (getPosition().y > jumpTo)
                 inFall = true;
@@ -88,13 +88,6 @@ public class Player extends ModelEntity
     {
         if (other instanceof Floor)
         {
-            if (other.getY() > getY())
-            {
-                jumpTo = 0;
-                inFall = true;
-                return;
-            }
-
             setY(other.getY() + other.getHeight()/2 + getHeight()/2);
 
             canJump = true;

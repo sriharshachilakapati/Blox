@@ -67,13 +67,16 @@ public class PlayState extends GameState
 
         for (String line : lines)
         {
+            if (line.trim().startsWith("#"))
+                continue;
+
             char[] tiles = line.toCharArray();
 
             for (char ch : tiles)
             {
                 switch (ch)
                 {
-                    case 'P': scene.addChild(player = new Player(new Vector3(x, 10, z)));
+                    case 'P': scene.addChild(player = new Player(new Vector3(x, 1, z)));
                     case 'F': scene.addChild(new Floor(new Vector3(x, 0, z))); break;
 
                     case 'N':
@@ -94,6 +97,29 @@ public class PlayState extends GameState
                     case 'S':
                         scene.addChild(new Cone(new Vector3(x, 1, z), Direction.SOUTH));
                         scene.addChild(new Floor(new Vector3(x, 0, z)));
+                        break;
+
+                    case 'p': scene.addChild(player = new Player(new Vector3(x, 2, z)));
+                    case 'f': scene.addChild(new Floor(new Vector3(x, 1, z))); break;
+
+                    case 'n':
+                        scene.addChild(new Cone(new Vector3(x, 2, z), Direction.NORTH));
+                        scene.addChild(new Floor(new Vector3(x, 1, z)));
+                        break;
+
+                    case 'e':
+                        scene.addChild(new Cone(new Vector3(x, 2, z), Direction.EAST));
+                        scene.addChild(new Floor(new Vector3(x, 1, z)));
+                        break;
+
+                    case 'w':
+                        scene.addChild(new Cone(new Vector3(x, 2, z), Direction.WEST));
+                        scene.addChild(new Floor(new Vector3(x, 1, z)));
+                        break;
+
+                    case 's':
+                        scene.addChild(new Cone(new Vector3(x, 2, z), Direction.SOUTH));
+                        scene.addChild(new Floor(new Vector3(x, 1, z)));
                         break;
                 }
 
