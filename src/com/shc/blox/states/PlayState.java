@@ -1,16 +1,19 @@
 package com.shc.blox.states;
 
+import com.shc.blox.Blox;
 import com.shc.blox.Direction;
 import com.shc.blox.entities.Cone;
 import com.shc.blox.entities.Floor;
 import com.shc.blox.entities.Player;
-import com.shc.silenceengine.collision.colliders.DynamicSceneCollider3D;
-import com.shc.silenceengine.collision.colliders.ISceneCollider3D;
+import com.shc.silenceengine.collision.broadphase.DynamicTree3D;
+import com.shc.silenceengine.collision.colliders.SceneCollider3D;
 import com.shc.silenceengine.core.Display;
 import com.shc.silenceengine.core.Game;
 import com.shc.silenceengine.core.GameState;
+import com.shc.silenceengine.core.SilenceEngine;
 import com.shc.silenceengine.graphics.Batcher;
 import com.shc.silenceengine.graphics.Color;
+import com.shc.silenceengine.graphics.Graphics2D;
 import com.shc.silenceengine.graphics.cameras.PerspCam;
 import com.shc.silenceengine.input.Keyboard;
 import com.shc.silenceengine.math.Vector3;
@@ -23,16 +26,16 @@ import com.shc.silenceengine.utils.FileUtils;
  */
 public class PlayState extends GameState
 {
-    public static Scene scene;
-    public static PerspCam camera;
-    public static Player player;
+    public static Scene     scene;
+    public static PerspCam  camera;
+    public static Player    player;
     public static Direction cameraDirection;
 
     private PerspCam camera2;
 
     private PointLight camLight;
 
-    private ISceneCollider3D collider;
+    private SceneCollider3D collider;
 
     public PlayState()
     {
@@ -40,10 +43,10 @@ public class PlayState extends GameState
         camera2 = new PerspCam().initProjection(70, Display.getAspectRatio(), 1, 100);
 
         scene = new Scene();
-        scene.addComponent(camLight = new PointLight(new Vector3(), Color.WHITE));
+        scene.addComponent(camLight = new PointLight(new Vector3(), Color.WHITE, 1, 50));
         scene.init();
 
-        collider = new DynamicSceneCollider3D();
+        collider = new SceneCollider3D(new DynamicTree3D());
         collider.setScene(scene);
 
         collider.register(Player.class, Floor.class);
@@ -181,7 +184,7 @@ public class PlayState extends GameState
         }
 
         // Smoothly interpolate the camera
-        camera2.slerp(camera, delta * 3);
+        camera2.slerp(camera, delta * 4);
 
         camLight.setPosition(camera2.getPosition());
     }
@@ -189,6 +192,9 @@ public class PlayState extends GameState
     @Override
     public void render(float delta, Batcher batcher)
     {
+        Graphics2D g2d = SilenceEngine.graphics.getGraphics2D();
+        g2d.drawTexture(Blox.EARTH, 0, 0, Display.getWidth(), Display.getHeight());
+
         camera2.apply();
         scene.render(delta, batcher);
     }

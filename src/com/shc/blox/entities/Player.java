@@ -66,12 +66,12 @@ public class Player extends ModelEntity
         {
             canJump = false;
             inFall = false;
-            jumpTo = 3;
+            jumpTo = getY() + 2;
         }
 
         if (!canJump && !inFall)
         {
-            getVelocity().addSelf(0, delta * 8, 0);
+            getVelocity().addSelf(0, delta * 12, 0);
 
             if (getPosition().y > jumpTo)
                 inFall = true;
