@@ -22,9 +22,11 @@ public class Blox extends Game
     public void init()
     {
         Display.setTitle("Blox - SilenceEngine 3D Demo");
+        Display.setSize(1280, 720);
+        Display.centerOnScreen();
 
-//        Display.setFullScreen(true);
-//        Display.hideCursor();
+        Display.setFullScreen(true);
+        Display.hideCursor();
 
         PLAYER = Model.load("resources/player.obj");
         FLOOR  = Model.load("resources/floor.obj");
@@ -35,7 +37,9 @@ public class Blox extends Game
         ControllerMapping.mapController();
 
         setGameState(new PlayState());
-        SilenceEngine.graphics.setClearColor(0.2f, 0.2f, 0.4f, 1f);
+
+        // Set to 10% Blue
+        SilenceEngine.graphics.setClearColor(0, 0, 0.1f, 1);
     }
 
     @Override

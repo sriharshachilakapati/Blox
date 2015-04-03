@@ -40,26 +40,55 @@ public class Player extends ModelEntity
 
         Vector3 temp = Vector3.REUSABLE_STACK.pop();
 
+        // The axes to use for movement
+        Vector3 forward = Vector3.REUSABLE_STACK.pop();
+        Vector3 right   = Vector3.REUSABLE_STACK.pop();
+
+        // Determine the axes based on camera direction
+        switch (PlayState.cameraDirection)
+        {
+            case NORTH:
+                forward.set(0, 0, -1);
+                right.set(1, 0, 0);
+                break;
+
+            case SOUTH:
+                forward.set(0, 0, 1);
+                right.set(-1, 0, 0);
+                break;
+
+            case EAST:
+                forward.set(1, 0, 0);
+                right.set(0, 0, 1);
+                break;
+
+            case WEST:
+                forward.set(-1, 0, 0);
+                right.set(0, 0, -1);
+        }
+
         // Simple movement on the maze
         if (Keyboard.isPressed('W') || Controller.isPressed(ControllerMapping.BUTTON_DPAD_UP, 0))
-            getVelocity().addSelf(temp.set(PlayState.camera.getForward()).normalizeSelf().scaleSelf(delta * 4));
+            getVelocity().addSelf(temp.set(forward)).normalizeSelf().scaleSelf(delta * 4);
 
         if (Keyboard.isPressed('S') || Controller.isPressed(ControllerMapping.BUTTON_DPAD_DOWN, 0))
-            getVelocity().addSelf(temp.set(PlayState.camera.getForward()).normalizeSelf().scaleSelf(delta * -4));
+            getVelocity().addSelf(temp.set(forward).normalizeSelf().scaleSelf(delta * -4));
 
         if (Keyboard.isPressed('A') || Controller.isPressed(ControllerMapping.BUTTON_DPAD_LEFT, 0))
-            getVelocity().addSelf(temp.set(PlayState.camera.getRight()).normalizeSelf().scaleSelf(delta * -4));
+            getVelocity().addSelf(temp.set(right).normalizeSelf().scaleSelf(delta * -4));
 
         if (Keyboard.isPressed('D') || Controller.isPressed(ControllerMapping.BUTTON_DPAD_RIGHT, 0))
-            getVelocity().addSelf(temp.set(PlayState.camera.getRight()).normalizeSelf().scaleSelf(delta * 4));
+            getVelocity().addSelf(temp.set(right).normalizeSelf().scaleSelf(delta * 4));
 
         // Controller axes
-        getVelocity().addSelf(temp.set(PlayState.camera.getForward()).normalizeSelf()
+        getVelocity().addSelf(temp.set(forward).normalizeSelf()
                                   .scaleSelf(Controller.getAxe(ControllerMapping.AXE_LS_Y, 0) * delta * -4));
-        getVelocity().addSelf(temp.set(PlayState.camera.getRight()).normalizeSelf()
+        getVelocity().addSelf(temp.set(right).normalizeSelf()
                                   .scaleSelf(Controller.getAxe(ControllerMapping.AXE_LS_X, 0) * delta * 4));
 
         Vector3.REUSABLE_STACK.push(temp);
+        Vector3.REUSABLE_STACK.push(forward);
+        Vector3.REUSABLE_STACK.push(right);
 
         // Jumping
         if (canJump && (Keyboard.isClicked(Keyboard.KEY_SPACE) || Controller.isClicked(ControllerMapping.BUTTON_JUMP, 0)))
@@ -71,7 +100,7 @@ public class Player extends ModelEntity
 
         if (!canJump && !inFall)
         {
-            getVelocity().addSelf(0, delta * 12, 0);
+            getVelocity().addSelf(0, delta * 10, 0);
 
             if (getPosition().y > jumpTo)
                 inFall = true;

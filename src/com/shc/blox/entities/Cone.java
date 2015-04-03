@@ -17,7 +17,7 @@ public class Cone extends ModelEntity
 
     public Cone(Vector3 position, Direction direction)
     {
-        super(Blox.CONE, new Cuboid(position, 1, 1, 1));
+        super(Blox.CONE, new Cuboid(position, 0.5f, 0.9f, 0.5f));
         setPosition(position);
 
         this.direction = direction;
