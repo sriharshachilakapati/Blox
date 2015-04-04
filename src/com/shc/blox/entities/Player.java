@@ -117,11 +117,19 @@ public class Player extends ModelEntity
     {
         if (other instanceof Floor)
         {
-            setY(other.getY() + other.getHeight()/2 + getHeight()/2);
+            setY(other.getY() + other.getHeight() / 2 + getHeight() / 2);
 
             canJump = true;
             jumpTo = 0;
             inFall = false;
+        }
+
+        if (other instanceof Goal)
+        {
+            PlayState.nextLevel();
+            Game.setGameState(new PlayState());
+
+            destroy();
         }
     }
 }

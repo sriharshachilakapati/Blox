@@ -2,8 +2,9 @@ package com.shc.blox.states;
 
 import com.shc.blox.Blox;
 import com.shc.blox.Direction;
-import com.shc.blox.entities.Cone;
+import com.shc.blox.entities.CameraSwitch;
 import com.shc.blox.entities.Floor;
+import com.shc.blox.entities.Goal;
 import com.shc.blox.entities.Player;
 import com.shc.silenceengine.collision.broadphase.DynamicTree3D;
 import com.shc.silenceengine.collision.colliders.SceneCollider3D;
@@ -20,49 +21,57 @@ import com.shc.silenceengine.math.Vector3;
 import com.shc.silenceengine.scene.Scene;
 import com.shc.silenceengine.scene.lights.PointLight;
 import com.shc.silenceengine.utils.FileUtils;
+import com.shc.silenceengine.utils.TimeUtils;
 
 /**
  * @author Sri Harsha Chilakapati
  */
 public class PlayState extends GameState
 {
-    public static Scene     scene;
+    private Scene scene;
+
     public static PerspCam  camera;
     public static Player    player;
     public static Direction cameraDirection;
 
+    private static int level = 1;
+
     private PerspCam camera2;
-
     private PointLight camLight;
-
     private SceneCollider3D collider;
+    private String message;
+
+    private static boolean reloadLevel = false;
 
     public PlayState()
     {
         camera = new PerspCam().initProjection(70, Display.getAspectRatio(), 1, 100);
         camera2 = new PerspCam().initProjection(70, Display.getAspectRatio(), 1, 100);
 
+        loadLevel("levels/level" + level + ".lvl");
+    }
+
+    private void loadLevel(String filename)
+    {
+        reloadLevel = false;
+
+        double start = TimeUtils.currentMillis();
+
+        message = "";
+
+        float x, z;
+
+        if (scene != null)
+            scene.destroy();
+
         scene = new Scene();
-        scene.addComponent(camLight = new PointLight(new Vector3(), Color.WHITE, 1, 50));
-        scene.init();
 
         collider = new SceneCollider3D(new DynamicTree3D());
         collider.setScene(scene);
 
         collider.register(Player.class, Floor.class);
-        collider.register(Cone.class, Player.class);
-
-        loadLevel("levels/level1.lvl");
-
-        cameraDirection = Direction.NORTH;
-    }
-
-    private void loadLevel(String filename)
-    {
-        float x, z;
-
-        // Remove all the children
-        scene.removeChildren();
+        collider.register(Player.class, Goal.class);
+        collider.register(CameraSwitch.class, Player.class);
 
         x = z = 0;
 
@@ -73,54 +82,78 @@ public class PlayState extends GameState
             if (line.trim().startsWith("#"))
                 continue;
 
+            if (line.trim().startsWith("@"))
+            {
+                message += line.trim().replaceFirst("@", "") + "\n";
+                continue;
+            }
+
+            if (line.trim().startsWith("!"))
+            {
+                switch (line.trim().replaceFirst("!", "").trim().toUpperCase().charAt(0))
+                {
+                    case 'N': cameraDirection = Direction.NORTH; break;
+                    case 'S': cameraDirection = Direction.SOUTH; break;
+                    case 'E': cameraDirection = Direction.EAST;  break;
+                    case 'W': cameraDirection = Direction.WEST;  break;
+                }
+
+                continue;
+            }
+
             char[] tiles = line.toCharArray();
 
             for (char ch : tiles)
             {
                 switch (ch)
                 {
+                    case 'G':
+                        scene.addChild(new Floor(new Vector3(x, 0, z)));
+                        scene.addChild(new Goal(new Vector3(x, 3, z)));
+                        break;
+
                     case 'P': scene.addChild(player = new Player(new Vector3(x, 5, z)));
                     case 'F': scene.addChild(new Floor(new Vector3(x, 0, z))); break;
 
                     case 'N':
-                        scene.addChild(new Cone(new Vector3(x, 1, z), Direction.NORTH));
+                        scene.addChild(new CameraSwitch(new Vector3(x, 1, z), Direction.NORTH));
                         scene.addChild(new Floor(new Vector3(x, 0, z)));
                         break;
 
                     case 'E':
-                        scene.addChild(new Cone(new Vector3(x, 1, z), Direction.EAST));
+                        scene.addChild(new CameraSwitch(new Vector3(x, 1, z), Direction.EAST));
                         scene.addChild(new Floor(new Vector3(x, 0, z)));
                         break;
 
                     case 'W':
-                        scene.addChild(new Cone(new Vector3(x, 1, z), Direction.WEST));
+                        scene.addChild(new CameraSwitch(new Vector3(x, 1, z), Direction.WEST));
                         scene.addChild(new Floor(new Vector3(x, 0, z)));
                         break;
 
                     case 'S':
-                        scene.addChild(new Cone(new Vector3(x, 1, z), Direction.SOUTH));
+                        scene.addChild(new CameraSwitch(new Vector3(x, 1, z), Direction.SOUTH));
                         scene.addChild(new Floor(new Vector3(x, 0, z)));
                         break;
 
                     case 'f': scene.addChild(new Floor(new Vector3(x, 1, z))); break;
 
                     case 'n':
-                        scene.addChild(new Cone(new Vector3(x, 2, z), Direction.NORTH));
+                        scene.addChild(new CameraSwitch(new Vector3(x, 2, z), Direction.NORTH));
                         scene.addChild(new Floor(new Vector3(x, 1, z)));
                         break;
 
                     case 'e':
-                        scene.addChild(new Cone(new Vector3(x, 2, z), Direction.EAST));
+                        scene.addChild(new CameraSwitch(new Vector3(x, 2, z), Direction.EAST));
                         scene.addChild(new Floor(new Vector3(x, 1, z)));
                         break;
 
                     case 'w':
-                        scene.addChild(new Cone(new Vector3(x, 2, z), Direction.WEST));
+                        scene.addChild(new CameraSwitch(new Vector3(x, 2, z), Direction.WEST));
                         scene.addChild(new Floor(new Vector3(x, 1, z)));
                         break;
 
                     case 's':
-                        scene.addChild(new Cone(new Vector3(x, 2, z), Direction.SOUTH));
+                        scene.addChild(new CameraSwitch(new Vector3(x, 2, z), Direction.SOUTH));
                         scene.addChild(new Floor(new Vector3(x, 1, z)));
                         break;
                 }
@@ -132,12 +165,21 @@ public class PlayState extends GameState
             x = 0;
         }
 
+
+        scene.addComponent(camLight = new PointLight(new Vector3(), Color.WHITE, 1, 50));
         scene.init();
+
+        double end = TimeUtils.currentMillis();
+
+        System.out.println(end - start);
+        System.out.println(scene.getComponents().size());
     }
 
     @Override
     public void update(float delta)
     {
+        Display.setTitle("UPS: " + Game.getUPS() + " | FPS: " + Game.getFPS());
+
         if (Keyboard.isClicked(Keyboard.KEY_ESCAPE))
             Game.end();
 
@@ -184,8 +226,10 @@ public class PlayState extends GameState
 
         // Smoothly interpolate the camera
         camera2.slerp(camera, delta * 4);
-
         camLight.setPosition(camera2.getPosition());
+
+        if (reloadLevel)
+            Game.setGameState(new PlayState());
     }
 
     @Override
@@ -196,6 +240,9 @@ public class PlayState extends GameState
 
         camera2.apply();
         scene.render(delta, batcher);
+
+        g2d.setColor(Color.WHITE);
+        g2d.drawString(message, 10, 10);
     }
 
     @Override
@@ -203,5 +250,18 @@ public class PlayState extends GameState
     {
         camera.initProjection(70, Display.getAspectRatio(), 1, 100);
         camera2.initProjection(70, Display.getAspectRatio(), 1, 100);
+    }
+
+    public static void nextLevel()
+    {
+        if (!FileUtils.resourceExists("levels/level" + (++level) + ".lvl"))
+            level--;
+
+        reloadLevel();
+    }
+
+    public static void reloadLevel()
+    {
+        reloadLevel = true;
     }
 }

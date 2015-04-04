@@ -1,0 +1,33 @@
+# P stands for Player
+# F stands for Floor
+# N stands for Cone pointing North
+# E stands for Cone pointing East
+# W stands for Cone pointing West
+# S stands for Cone pointing South
+# G stands for goal sphere
+# Small letters are the same, except that they are a bit high
+
+# The initial camera direction
+!EAST
+
+# The message on the screen
+@the CONE objects change the CAMERA direction
+
+   EFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFGFF
+   FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+   FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+   FFFF
+   FFFF
+   FFFF
+   FFFF
+   FFFF         FFFFFFFFFFFFFFFFFFFFFFFFF
+   FFFF         FFFFFFFFFFFFFFFFFFFFFFFFF
+   FFFF         FPFFFFFFFFFFFFFFFFFFFFFFS
+   FFFF                              FFFF
+   FFFF                              FFFF
+   FFFF                              FFFF
+   FFFF                              FFFF
+   FFFF                              FFFF
+   FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+   FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+   NFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFW

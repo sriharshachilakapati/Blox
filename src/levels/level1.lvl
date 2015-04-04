@@ -4,23 +4,28 @@
 # E stands for Cone pointing East
 # W stands for Cone pointing West
 # S stands for Cone pointing South
+# G stands for goal sphere
 # Small letters are the same, except that they are a bit high
 
+# The initial direction of the camera
+!NORTH
 
-    FF               ffFFFFFFFFFFW
-    FF
-    FF   FFFFFFFffFF
-    FF
-    FF
-    ff            FFFFFFF    FF
-    FF
-    FF
-    FF       FFF       FFF
-             FFF        FFF
+# The message rendered on each level
+@Use WASD keys to move Blox
+@Use SPACE key to jump
 
-    FF
-    ff        SFFFFFPF    FFFFE
-    FF
-    FF
-    FF                          FF
-    FFFFFF   FF   FFFFF   FFF   SF
+   FFF
+  FFFFF
+    G
+ FFFFFFF
+   FFF
+   FFF
+   FFF
+   FFF
+    F
+   FFF
+   FFF
+   FFF
+   FFF
+ FFFPFFF
+  FFFFF

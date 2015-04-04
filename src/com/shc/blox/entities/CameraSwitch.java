@@ -11,11 +11,11 @@ import com.shc.silenceengine.scene.entity.ModelEntity;
 /**
  * @author Sri Harsha Chilakapati
  */
-public class Cone extends ModelEntity
+public class CameraSwitch extends ModelEntity
 {
     private Direction direction;
 
-    public Cone(Vector3 position, Direction direction)
+    public CameraSwitch(Vector3 position, Direction direction)
     {
         super(Blox.CONE, new Cuboid(position, 0.5f, 0.9f, 0.5f));
         setPosition(position);
