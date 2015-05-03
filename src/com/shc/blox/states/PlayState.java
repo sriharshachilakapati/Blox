@@ -21,7 +21,6 @@ import com.shc.silenceengine.math.Vector3;
 import com.shc.silenceengine.scene.Scene;
 import com.shc.silenceengine.scene.lights.PointLight;
 import com.shc.silenceengine.utils.FileUtils;
-import com.shc.silenceengine.utils.TimeUtils;
 
 /**
  * @author Sri Harsha Chilakapati
@@ -30,8 +29,9 @@ public class PlayState extends GameState
 {
     private Scene scene;
 
-    public static PerspCam  camera;
-    public static Player    player;
+    private PerspCam  camera;
+    private Player    player;
+
     public static Direction cameraDirection;
 
     private static int level = 1;
@@ -54,8 +54,6 @@ public class PlayState extends GameState
     private void loadLevel(String filename)
     {
         reloadLevel = false;
-
-        double start = TimeUtils.currentMillis();
 
         message = "";
 
@@ -165,20 +163,15 @@ public class PlayState extends GameState
             x = 0;
         }
 
-
+        camLight = null;
         scene.addComponent(camLight = new PointLight(new Vector3(), Color.WHITE, 1, 50));
         scene.init();
-
-        double end = TimeUtils.currentMillis();
-
-        System.out.println(end - start);
-        System.out.println(scene.getComponents().size());
     }
 
     @Override
     public void update(float delta)
     {
-        Display.setTitle("UPS: " + Game.getUPS() + " | FPS: " + Game.getFPS());
+        Display.setTitle("UPS: " + Game.getUPS() + " | FPS: " + Game.getFPS() + " | RC: " + SilenceEngine.graphics.renderCallsPerFrame);
 
         if (Keyboard.isClicked(Keyboard.KEY_ESCAPE))
             Game.end();
@@ -226,7 +219,9 @@ public class PlayState extends GameState
 
         // Smoothly interpolate the camera
         camera2.slerp(camera, delta * 4);
-        camLight.setPosition(camera2.getPosition());
+
+        if (camLight != null)
+            camLight.setPosition(camera.getPosition());
 
         if (reloadLevel)
             Game.setGameState(new PlayState());
@@ -255,7 +250,7 @@ public class PlayState extends GameState
     public static void nextLevel()
     {
         if (!FileUtils.resourceExists("levels/level" + (++level) + ".lvl"))
-            level--;
+            level = 1;
 
         reloadLevel();
     }

@@ -14,8 +14,6 @@ public class Goal extends ModelEntity
     {
         super(Blox.SPHERE, new Sphere(position, 0.5f));
         setPosition(position);
-
-        System.out.println(getPolyhedron().vertexCount());
     }
 
     @Override
