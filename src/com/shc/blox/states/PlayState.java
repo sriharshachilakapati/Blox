@@ -1,7 +1,7 @@
 package com.shc.blox.states;
 
-import com.shc.blox.Blox;
 import com.shc.blox.Direction;
+import com.shc.blox.Resources;
 import com.shc.blox.entities.CameraSwitch;
 import com.shc.blox.entities.Floor;
 import com.shc.blox.entities.Goal;
@@ -17,8 +17,9 @@ import com.shc.silenceengine.graphics.Color;
 import com.shc.silenceengine.graphics.Graphics2D;
 import com.shc.silenceengine.graphics.cameras.PerspCam;
 import com.shc.silenceengine.input.Keyboard;
+import com.shc.silenceengine.io.FilePath;
 import com.shc.silenceengine.math.Vector3;
-import com.shc.silenceengine.scene.Scene;
+import com.shc.silenceengine.scene.Scene3D;
 import com.shc.silenceengine.scene.lights.PointLight;
 import com.shc.silenceengine.utils.FileUtils;
 
@@ -27,19 +28,19 @@ import com.shc.silenceengine.utils.FileUtils;
  */
 public class PlayState extends GameState
 {
-    private Scene scene;
+    private Scene3D scene;
 
-    private PerspCam  camera;
-    private Player    player;
+    private PerspCam camera;
+    private Player   player;
 
     public static Direction cameraDirection;
 
     private static int level = 1;
 
-    private PerspCam camera2;
-    private PointLight camLight;
+    private PerspCam        camera2;
+    private PointLight      camLight;
     private SceneCollider3D collider;
-    private String message;
+    private String          message;
 
     private static boolean reloadLevel = false;
 
@@ -62,7 +63,7 @@ public class PlayState extends GameState
         if (scene != null)
             scene.destroy();
 
-        scene = new Scene();
+        scene = new Scene3D();
 
         collider = new SceneCollider3D(new DynamicTree3D());
         collider.setScene(scene);
@@ -73,7 +74,7 @@ public class PlayState extends GameState
 
         x = z = 0;
 
-        String[] lines = FileUtils.readLinesToStringArray(FileUtils.getResource(filename));
+        String[] lines = FileUtils.readLinesToStringArray(FilePath.getResourceFile(filename));
 
         for (String line : lines)
         {
@@ -164,8 +165,7 @@ public class PlayState extends GameState
         }
 
         camLight = null;
-        scene.addComponent(camLight = new PointLight(new Vector3(), Color.WHITE, 1, 50));
-        scene.init();
+        scene.addComponent(camLight = new PointLight(new Vector3(), Color.WHITE));
     }
 
     @Override
@@ -231,10 +231,10 @@ public class PlayState extends GameState
     public void render(float delta, Batcher batcher)
     {
         Graphics2D g2d = SilenceEngine.graphics.getGraphics2D();
-        g2d.drawTexture(Blox.EARTH, 0, 0, Display.getWidth(), Display.getHeight());
+        g2d.drawTexture(Resources.Textures.EARTH, 0, 0, Display.getWidth(), Display.getHeight());
 
         camera2.apply();
-        scene.render(delta, batcher);
+        scene.render(delta);
 
         g2d.setColor(Color.WHITE);
         g2d.drawString(message, 10, 10);

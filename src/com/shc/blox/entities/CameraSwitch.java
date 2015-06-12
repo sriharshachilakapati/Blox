@@ -1,23 +1,22 @@
 package com.shc.blox.entities;
 
-import com.shc.blox.Blox;
 import com.shc.blox.Direction;
+import com.shc.blox.Resources;
 import com.shc.blox.states.PlayState;
 import com.shc.silenceengine.math.Vector3;
 import com.shc.silenceengine.math.geom3d.Cuboid;
 import com.shc.silenceengine.scene.entity.Entity3D;
-import com.shc.silenceengine.scene.entity.ModelEntity;
 
 /**
  * @author Sri Harsha Chilakapati
  */
-public class CameraSwitch extends ModelEntity
+public class CameraSwitch extends Entity3D
 {
     private Direction direction;
 
     public CameraSwitch(Vector3 position, Direction direction)
     {
-        super(Blox.CONE, new Cuboid(position, 0.5f, 0.9f, 0.5f));
+        super(Resources.Models.CONE, new Cuboid(position, 0.5f, 0.9f, 0.5f));
         setPosition(position);
 
         this.direction = direction;

@@ -1,7 +1,7 @@
 package com.shc.blox.entities;
 
-import com.shc.blox.Blox;
 import com.shc.blox.ControllerMapping;
+import com.shc.blox.Resources;
 import com.shc.blox.states.PlayState;
 import com.shc.silenceengine.core.Game;
 import com.shc.silenceengine.input.Controller;
@@ -9,12 +9,11 @@ import com.shc.silenceengine.input.Keyboard;
 import com.shc.silenceengine.math.Vector3;
 import com.shc.silenceengine.math.geom3d.Cuboid;
 import com.shc.silenceengine.scene.entity.Entity3D;
-import com.shc.silenceengine.scene.entity.ModelEntity;
 
 /**
  * @author Sri Harsha Chilakapati
  */
-public class Player extends ModelEntity
+public class Player extends Entity3D
 {
     private boolean canJump;
     private boolean inFall;
@@ -23,7 +22,7 @@ public class Player extends ModelEntity
 
     public Player(Vector3 position)
     {
-        super(Blox.PLAYER, new Cuboid(position, 1, 1, 1));
+        super(Resources.Models.PLAYER, new Cuboid(position, 1, 1, 1));
         setPosition(position);
 
         canJump = false;

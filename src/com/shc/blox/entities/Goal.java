@@ -1,18 +1,18 @@
 package com.shc.blox.entities;
 
-import com.shc.blox.Blox;
+import com.shc.blox.Resources;
 import com.shc.silenceengine.math.Vector3;
 import com.shc.silenceengine.math.geom3d.Sphere;
-import com.shc.silenceengine.scene.entity.ModelEntity;
+import com.shc.silenceengine.scene.entity.Entity3D;
 
 /**
  * @author Sri Harsha Chilakapati
  */
-public class Goal extends ModelEntity
+public class Goal extends Entity3D
 {
     public Goal(Vector3 position)
     {
-        super(Blox.SPHERE, new Sphere(position, 0.5f));
+        super(Resources.Models.SPHERE, new Sphere(position, 0.5f));
         setPosition(position);
     }
 
