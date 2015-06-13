@@ -249,7 +249,7 @@ public class PlayState extends GameState
 
     public static void nextLevel()
     {
-        if (!FileUtils.resourceExists("levels/level" + (++level) + ".lvl"))
+        if (!FilePath.getResourceFile("levels/level" + (++level) + ".lvl").exists())
             level = 1;
 
         reloadLevel();
