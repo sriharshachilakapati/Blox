@@ -185,6 +185,18 @@ public class PlayState extends GameState
         if (Keyboard.isClicked(Keyboard.KEY_ESCAPE))
             Game.end();
 
+        if (Keyboard.isClicked(Keyboard.KEY_F1))
+        {
+            Display.setFullScreen(!Display.isFullScreen());
+
+            if (Display.isFullScreen())
+                Display.hideCursor();
+            else
+                Display.showCursor();
+
+            resize();
+        }
+
         scene.update(delta);
         collider.checkCollisions();
 
@@ -194,7 +206,7 @@ public class PlayState extends GameState
                 camera.getRotation().set();
                 camera.setPosition(player.getPosition());
                 camera.moveUp(5);
-                camera.moveBackward(5);
+                camera.moveBackward(3);
                 camera.rotateX(-45);
                 break;
 
@@ -202,7 +214,7 @@ public class PlayState extends GameState
                 camera.getRotation().set();
                 camera.setPosition(player.getPosition());
                 camera.moveUp(5);
-                camera.moveForward(5);
+                camera.moveForward(3);
                 camera.rotateY(180);
                 camera.rotateX(-45);
                 break;
@@ -211,7 +223,7 @@ public class PlayState extends GameState
                 camera.getRotation().set();
                 camera.setPosition(player.getPosition());
                 camera.moveUp(5);
-                camera.moveLeft(5);
+                camera.moveLeft(3);
                 camera.rotateY(-90);
                 camera.rotateX(-45);
                 break;
@@ -220,7 +232,7 @@ public class PlayState extends GameState
                 camera.getRotation().set();
                 camera.setPosition(player.getPosition());
                 camera.moveUp(5);
-                camera.moveRight(5);
+                camera.moveRight(3);
                 camera.rotateY(90);
                 camera.rotateX(-45);
                 break;
@@ -259,6 +271,7 @@ public class PlayState extends GameState
     {
         camera.initProjection(70, Display.getAspectRatio(), 1, 100);
         camera2.initProjection(70, Display.getAspectRatio(), 1, 100);
+        SilenceEngine.graphics.getGraphics2D().getCamera().initProjection(Display.getWidth(), Display.getHeight());
     }
 
     public static void nextLevel()
