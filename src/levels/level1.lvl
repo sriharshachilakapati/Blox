@@ -5,6 +5,7 @@
 # W stands for Cone pointing West
 # S stands for Cone pointing South
 # G stands for goal sphere
+# C stands for a collectible
 # Small letters are the same, except that they are a bit high
 
 # The initial direction of the camera

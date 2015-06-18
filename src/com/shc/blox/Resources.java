@@ -22,6 +22,7 @@ public final class Resources
         public static Model PLAYER;
         public static Model SPHERE;
         public static Model CONE;
+        public static Model COLLECT;
     }
 
     public static void load()
@@ -34,6 +35,7 @@ public final class Resources
         int modPlayerID = loader.defineModel("resources/player.obj");
         int modSphereID = loader.defineModel("resources/sphere.obj");
         int modConeID = loader.defineModel("resources/cone.obj");
+        int modCollectID = loader.defineModel("resources/piece.obj");
 
         int fontBloxID = loader.defineFont("resources/Blox2.ttf", TrueTypeFont.STYLE_NORMAL, 30);
 
@@ -44,6 +46,7 @@ public final class Resources
         Models.PLAYER = loader.getModel(modPlayerID);
         Models.SPHERE = loader.getModel(modSphereID);
         Models.CONE = loader.getModel(modConeID);
+        Models.COLLECT = loader.getModel(modCollectID);
 
         SilenceEngine.graphics.getGraphics2D().setFont(loader.getFont(fontBloxID));
     }

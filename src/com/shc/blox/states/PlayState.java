@@ -3,6 +3,7 @@ package com.shc.blox.states;
 import com.shc.blox.Direction;
 import com.shc.blox.Resources;
 import com.shc.blox.entities.CameraSwitch;
+import com.shc.blox.entities.Collect;
 import com.shc.blox.entities.Floor;
 import com.shc.blox.entities.Goal;
 import com.shc.blox.entities.Player;
@@ -35,7 +36,8 @@ public class PlayState extends GameState
 
     public static Direction cameraDirection;
 
-    private static int level = 1;
+    public static int LEVEL = 1;
+    public static int SCORE = 0;
 
     private PerspCam        camera2;
     private PointLight      camLight;
@@ -49,7 +51,7 @@ public class PlayState extends GameState
         camera = new PerspCam().initProjection(70, Display.getAspectRatio(), 1, 100);
         camera2 = new PerspCam().initProjection(70, Display.getAspectRatio(), 1, 100);
 
-        loadLevel("levels/level" + level + ".lvl");
+        loadLevel("levels/level" + LEVEL + ".lvl");
     }
 
     private void loadLevel(String filename)
@@ -70,6 +72,7 @@ public class PlayState extends GameState
 
         collider.register(Player.class, Floor.class);
         collider.register(Player.class, Goal.class);
+        collider.register(Player.class, Collect.class);
         collider.register(CameraSwitch.class, Player.class);
 
         x = z = 0;
@@ -113,6 +116,12 @@ public class PlayState extends GameState
 
                     case 'P': scene.addChild(player = new Player(new Vector3(x, 5, z)));
                     case 'F': scene.addChild(new Floor(new Vector3(x, 0, z))); break;
+
+                    case 'C':
+                    case 'c':
+                        scene.addChild(new Collect(new Vector3(x, 3, z)));
+                        scene.addChild(new Floor(new Vector3(x, 0, z)));
+                        break;
 
                     case 'N':
                         scene.addChild(new CameraSwitch(new Vector3(x, 1, z), Direction.NORTH));
@@ -238,6 +247,11 @@ public class PlayState extends GameState
 
         g2d.setColor(Color.WHITE);
         g2d.drawString(message, 10, 10);
+
+        String scoreString = String.format("%d PTAS", SCORE);
+        float x = Display.getWidth() - g2d.getFont().getWidth(scoreString) - 10;
+        float y = Display.getHeight() - g2d.getFont().getHeight() - 10;
+        g2d.drawString(scoreString, x, y);
     }
 
     @Override
@@ -249,8 +263,11 @@ public class PlayState extends GameState
 
     public static void nextLevel()
     {
-        if (!FilePath.getResourceFile("levels/level" + (++level) + ".lvl").exists())
-            level = 1;
+        if (!FilePath.getResourceFile("levels/level" + (++LEVEL) + ".lvl").exists())
+        {
+            LEVEL = 1;
+            SCORE = 0;
+        }
 
         reloadLevel();
     }

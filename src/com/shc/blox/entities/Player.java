@@ -125,10 +125,18 @@ public class Player extends Entity3D
 
         if (other instanceof Goal)
         {
+            PlayState.SCORE += PlayState.LEVEL * 100;
+
             PlayState.nextLevel();
             Game.setGameState(new PlayState());
 
             destroy();
+        }
+
+        if (other instanceof Collect)
+        {
+            other.destroy();
+            PlayState.SCORE += 10;
         }
     }
 }

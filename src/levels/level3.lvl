@@ -1,0 +1,43 @@
+# P stands for Player
+# F stands for Floor
+# N stands for Cone pointing North
+# E stands for Cone pointing East
+# W stands for Cone pointing West
+# S stands for Cone pointing South
+# G stands for goal sphere
+# C stands for a collectible
+# Small letters are the same, except that they are a bit high
+
+# The initial camera direction
+!EAST
+
+# The message on the screen
+@COLLECT the YELLOW boxes to gain score
+
+
+    FFF    FFF    FFF    FFCCF
+    FPF    FCF    FCF    FFFSF
+    FFF    FFF    FFF    FFCCF
+
+
+
+                           FFF
+                           FCF
+                           FFF
+
+
+
+                           FFF
+                           FCF
+                           FFF
+
+
+
+                           FFF
+                           FCF
+                           FFF
+
+
+           FFF    FFF    FFCCF
+           FGF    FCF    FFFWF
+           FFF    FFF    FFCCF
