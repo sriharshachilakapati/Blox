@@ -17,6 +17,7 @@ public class Player extends Entity3D
 {
     private boolean canJump;
     private boolean inFall;
+    private boolean accepted = false;
 
     private float jumpTo;
 
@@ -36,6 +37,9 @@ public class Player extends Entity3D
             Game.setGameState(new PlayState());
 
         getVelocity().set(0, 0, 0);
+
+        if (accepted)
+            return;
 
         Vector3 temp = Vector3.REUSABLE_STACK.pop();
 
@@ -125,12 +129,8 @@ public class Player extends Entity3D
 
         if (other instanceof Goal)
         {
-            PlayState.SCORE += PlayState.LEVEL * 100;
-
-            PlayState.nextLevel();
-            Game.setGameState(new PlayState());
-
-            destroy();
+            ((Goal) other).accept(this);
+            accepted = true;
         }
 
         if (other instanceof Collect)
