@@ -6,7 +6,8 @@
 # S stands for Cone pointing South
 # G stands for goal sphere
 # C stands for a collectible
-# Small letters are the same, except that they are a bit high
+# T stands for ThunderBall moving North and South
+# t stands for ThunderBall moving East and West
 
 # The initial camera direction
 !EAST

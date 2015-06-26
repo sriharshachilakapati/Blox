@@ -7,6 +7,7 @@ import com.shc.blox.entities.Collect;
 import com.shc.blox.entities.Floor;
 import com.shc.blox.entities.Goal;
 import com.shc.blox.entities.Player;
+import com.shc.blox.entities.ThunderBall;
 import com.shc.silenceengine.collision.broadphase.DynamicTree3D;
 import com.shc.silenceengine.collision.colliders.SceneCollider3D;
 import com.shc.silenceengine.core.Display;
@@ -23,6 +24,7 @@ import com.shc.silenceengine.math.Vector3;
 import com.shc.silenceengine.scene.Scene3D;
 import com.shc.silenceengine.scene.lights.PointLight;
 import com.shc.silenceengine.utils.FileUtils;
+import com.shc.silenceengine.utils.MathUtils;
 
 /**
  * @author Sri Harsha Chilakapati
@@ -73,6 +75,7 @@ public class PlayState extends GameState
         collider.register(Player.class, Floor.class);
         collider.register(Player.class, Goal.class);
         collider.register(Player.class, Collect.class);
+        collider.register(Player.class, ThunderBall.class);
         collider.register(CameraSwitch.class, Player.class);
 
         x = z = 0;
@@ -117,8 +120,17 @@ public class PlayState extends GameState
                     case 'P': scene.addChild(player = new Player(new Vector3(x, 5, z)));
                     case 'F': scene.addChild(new Floor(new Vector3(x, 0, z))); break;
 
+                    case 'T':
+                        scene.addChild(new ThunderBall(new Vector3(x, 1, z), MathUtils.random_range(0, 2) == 0 ? Direction.NORTH : Direction.SOUTH));
+                        scene.addChild(new Floor(new Vector3(x, 0, z)));
+                        break;
+
+                    case 't':
+                        scene.addChild(new ThunderBall(new Vector3(x, 1, z), MathUtils.random_range(0, 2) == 0 ? Direction.EAST : Direction.WEST));
+                        scene.addChild(new Floor(new Vector3(x, 0, z)));
+                        break;
+
                     case 'C':
-                    case 'c':
                         scene.addChild(new Collect(new Vector3(x, 3, z)));
                         scene.addChild(new Floor(new Vector3(x, 0, z)));
                         break;
@@ -141,28 +153,6 @@ public class PlayState extends GameState
                     case 'S':
                         scene.addChild(new CameraSwitch(new Vector3(x, 1, z), Direction.SOUTH));
                         scene.addChild(new Floor(new Vector3(x, 0, z)));
-                        break;
-
-                    case 'f': scene.addChild(new Floor(new Vector3(x, 1, z))); break;
-
-                    case 'n':
-                        scene.addChild(new CameraSwitch(new Vector3(x, 2, z), Direction.NORTH));
-                        scene.addChild(new Floor(new Vector3(x, 1, z)));
-                        break;
-
-                    case 'e':
-                        scene.addChild(new CameraSwitch(new Vector3(x, 2, z), Direction.EAST));
-                        scene.addChild(new Floor(new Vector3(x, 1, z)));
-                        break;
-
-                    case 'w':
-                        scene.addChild(new CameraSwitch(new Vector3(x, 2, z), Direction.WEST));
-                        scene.addChild(new Floor(new Vector3(x, 1, z)));
-                        break;
-
-                    case 's':
-                        scene.addChild(new CameraSwitch(new Vector3(x, 2, z), Direction.SOUTH));
-                        scene.addChild(new Floor(new Vector3(x, 1, z)));
                         break;
                 }
 
@@ -199,6 +189,8 @@ public class PlayState extends GameState
 
         scene.update(delta);
         collider.checkCollisions();
+
+        SCORE = Math.max(SCORE, 0);
 
         switch (cameraDirection)
         {

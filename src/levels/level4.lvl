@@ -1,0 +1,32 @@
+# P stands for Player
+# F stands for Floor
+# N stands for Cone pointing North
+# E stands for Cone pointing East
+# W stands for Cone pointing West
+# S stands for Cone pointing South
+# G stands for goal sphere
+# C stands for a collectible
+# T stands for ThunderBall moving North and South
+# t stands for ThunderBall moving East and West
+
+# The initial camera direction
+!NORTH
+
+# Info lines on the level
+@try to ESCAPE from the thunder balls
+
+    FFF   FFF   FFF
+    FEFFTFFCF   FSF
+    FFF   FFF   FFF
+     F           F
+     t           t
+     F           F
+    FFF         FFF
+    FCF         FCF
+    FFF         FFF
+
+
+                FFF     FFF
+    FFF         FEFFFTFFFGF
+    FPF         FFF     FFF
+    FFF

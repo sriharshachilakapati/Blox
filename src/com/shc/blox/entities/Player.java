@@ -133,6 +133,12 @@ public class Player extends Entity3D
             accepted = true;
         }
 
+        if (other instanceof ThunderBall)
+        {
+            ((ThunderBall) other).accept(this);
+            accepted = true;
+        }
+
         if (other instanceof Collect)
         {
             other.destroy();
