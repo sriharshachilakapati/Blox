@@ -30,10 +30,10 @@ public class ThunderBall extends Entity3D
 
         switch (velocityDir)
         {
-            case NORTH: setPosition(position.addSelf(0, 0, 3));  break;
-            case EAST:  setPosition(position.addSelf(-3, 0, 0)); break;
-            case SOUTH: setPosition(position.addSelf(0, 0, -3)); break;
-            case WEST:  setPosition(position.addSelf(3, 0, 0));  break;
+            case NORTH: setPosition(position.addSelf(+0, +0, +3)); break;
+            case EAST:  setPosition(position.addSelf(-3, +0, +0)); break;
+            case SOUTH: setPosition(position.addSelf(+0, +0, -3)); break;
+            case WEST:  setPosition(position.addSelf(+3, +0, +0)); break;
         }
 
         GameTimer timer = new GameTimer(1.5, TimeUtils.Unit.SECONDS);

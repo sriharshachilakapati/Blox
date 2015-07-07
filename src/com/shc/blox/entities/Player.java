@@ -3,7 +3,6 @@ package com.shc.blox.entities;
 import com.shc.blox.ControllerMapping;
 import com.shc.blox.Resources;
 import com.shc.blox.states.PlayState;
-import com.shc.silenceengine.core.Game;
 import com.shc.silenceengine.input.Controller;
 import com.shc.silenceengine.input.Keyboard;
 import com.shc.silenceengine.math.Vector3;
@@ -33,8 +32,11 @@ public class Player extends Entity3D
     @Override
     public void update(float delta)
     {
-        if (Keyboard.isClicked('R') || getY() < -10 || Controller.isClicked(ControllerMapping.BUTTON_START, 0))
-            Game.setGameState(new PlayState());
+        if (getPosition().y < -10)
+            PlayState.SCORE -= PlayState.LEVEL * 50;
+
+        if (Keyboard.isClicked('R') || getPosition().y < -10 || Controller.isClicked(ControllerMapping.BUTTON_START, 0))
+            PlayState.reloadLevel();
 
         getVelocity().set(0, 0, 0);
 
