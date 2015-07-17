@@ -11,15 +11,18 @@ import com.shc.silenceengine.core.SilenceEngine;
 public class Blox extends Game
 {
     @Override
-    public void init()
+    public void preInit()
     {
         Display.setTitle("Blox - SilenceEngine 3D Demo");
-        Display.setSize(1366, 768);
-        Display.centerOnScreen();
+
+        Display.setFullScreen(true);
         Display.hideCursor();
+    }
 
+    @Override
+    public void init()
+    {
         Resources.load();
-
         ControllerMapping.mapController();
 
         setGameState(new PlayState());

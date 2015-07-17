@@ -183,8 +183,6 @@ public class PlayState extends GameState
                 Display.hideCursor();
             else
                 Display.showCursor();
-
-            resize();
         }
 
         scene.update(delta);
