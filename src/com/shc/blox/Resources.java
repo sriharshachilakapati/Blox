@@ -12,6 +12,8 @@ import com.shc.silenceengine.graphics.opengl.Texture;
  */
 public final class Resources
 {
+    private static ResourceLoader loader;
+
     public static final class Textures
     {
         public static Texture EARTH;
@@ -29,37 +31,40 @@ public final class Resources
 
     public static void load()
     {
-        ResourceLoader loader = ResourceLoader.getInstance();
+        loader = new ResourceLoader();
 
-        int texEarthID = loader.defineTexture("resources/texture-earth.png");
+        int texEarthID = loader.loadResource(Texture.class, "resources/texture-earth.png");
 
-        int modFloorID = loader.defineModel("resources/floor.obj");
-        int modPlayerID = loader.defineModel("resources/player.obj");
-        int modSphereID = loader.defineModel("resources/sphere.obj");
-        int modSphere2ID = loader.defineModel("resources/sphere2.obj");
-        int modConeID = loader.defineModel("resources/cone.obj");
-        int modCollectID = loader.defineModel("resources/piece.obj");
+        int modFloorID   = loader.loadResource(Model.class, "resources/floor.obj");
+        int modPlayerID  = loader.loadResource(Model.class, "resources/player.obj");
+        int modSphereID  = loader.loadResource(Model.class, "resources/sphere.obj");
+        int modSphere2ID = loader.loadResource(Model.class, "resources/sphere2.obj");
+        int modConeID    = loader.loadResource(Model.class, "resources/cone.obj");
+        int modCollectID = loader.loadResource(Model.class, "resources/piece.obj");
 
-        int fontBloxID = loader.defineFont("resources/Blox2.ttf", TrueTypeFont.STYLE_NORMAL, 30);
+        int fontBloxID = loader.loadResource(TrueTypeFont.class, "resources/Blox2.ttf");
 
         loader.startLoading();
 
-        Textures.EARTH = loader.getTexture(texEarthID);
-        Models.FLOOR = loader.getModel(modFloorID);
-        Models.PLAYER = loader.getModel(modPlayerID);
-        Models.SPHERE = loader.getModel(modSphereID);
-        Models.SPHERE2 = loader.getModel(modSphere2ID);
-        Models.CONE = loader.getModel(modConeID);
-        Models.COLLECT = loader.getModel(modCollectID);
+        Textures.EARTH = loader.getResource(texEarthID);
+        Models.FLOOR   = loader.getResource(modFloorID);
+        Models.PLAYER  = loader.getResource(modPlayerID);
+        Models.SPHERE  = loader.getResource(modSphereID);
+        Models.SPHERE2 = loader.getResource(modSphere2ID);
+        Models.CONE    = loader.getResource(modConeID);
+        Models.COLLECT = loader.getResource(modCollectID);
 
         // Tweak it a bit since OBJ doesn't support opacity attribute
         Models.SPHERE2.getMeshes().get(0).getMaterial().setDiffuse(Color.TRANSPARENT).setAmbient(Color.GRAY);
 
-        SilenceEngine.graphics.getGraphics2D().setFont(loader.getFont(fontBloxID));
+        TrueTypeFont font = loader.getResource(fontBloxID);
+        font.setSize(30);
+        SilenceEngine.graphics.getGraphics2D().setFont(font);
+
     }
 
     public static void dispose()
     {
-        ResourceLoader.getInstance().dispose();
+        loader.dispose();
     }
 }
