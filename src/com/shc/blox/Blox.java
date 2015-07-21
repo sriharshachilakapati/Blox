@@ -14,9 +14,10 @@ public class Blox extends Game
     public void preInit()
     {
         Display.setTitle("Blox - SilenceEngine 3D Demo");
+        Display.setSize(1366, 768);
 
-        Display.setFullScreen(true);
-        Display.hideCursor();
+//        Display.setFullScreen(true);
+//        Display.hideCursor();
     }
 
     @Override

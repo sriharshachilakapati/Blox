@@ -7,6 +7,7 @@ import com.shc.blox.entities.Collect;
 import com.shc.blox.entities.Floor;
 import com.shc.blox.entities.Goal;
 import com.shc.blox.entities.Player;
+import com.shc.blox.entities.Thorns;
 import com.shc.blox.entities.ThunderBall;
 import com.shc.silenceengine.collision.broadphase.DynamicTree3D;
 import com.shc.silenceengine.collision.colliders.SceneCollider3D;
@@ -47,6 +48,7 @@ public class PlayState extends GameState
     private String          message;
 
     private static boolean reloadLevel = false;
+    private static boolean freeCamera = false;
 
     public PlayState()
     {
@@ -59,6 +61,7 @@ public class PlayState extends GameState
     private void loadLevel(String filename)
     {
         reloadLevel = false;
+        freeCamera = false;
 
         message = "";
 
@@ -74,6 +77,7 @@ public class PlayState extends GameState
 
         collider.register(Player.class, Floor.class);
         collider.register(Player.class, Goal.class);
+        collider.register(Player.class, Thorns.class);
         collider.register(Player.class, Collect.class);
         collider.register(Player.class, ThunderBall.class);
         collider.register(CameraSwitch.class, Player.class);
@@ -154,6 +158,11 @@ public class PlayState extends GameState
                         scene.addChild(new CameraSwitch(new Vector3(x, 1, z), Direction.SOUTH));
                         scene.addChild(new Floor(new Vector3(x, 0, z)));
                         break;
+
+                    case 'X':
+                        scene.addChild(new Thorns(new Vector3(x, 0.8f, z)));
+                        scene.addChild(new Floor(new Vector3(x, 0, z)));
+                        break;
                 }
 
                 x++;
@@ -185,47 +194,88 @@ public class PlayState extends GameState
                 Display.showCursor();
         }
 
-        scene.update(delta);
-        collider.checkCollisions();
+        if (Keyboard.isClicked(Keyboard.KEY_TAB))
+            freeCamera = !freeCamera;
+
+        if (!freeCamera)
+        {
+            scene.update(delta);
+            collider.checkCollisions();
+        }
 
         SCORE = Math.max(SCORE, 0);
 
-        switch (cameraDirection)
+        if (!freeCamera)
         {
-            case NORTH:
-                camera.getRotation().set();
-                camera.setPosition(player.getPosition());
-                camera.moveUp(5);
-                camera.moveBackward(3);
-                camera.rotateX(-45);
-                break;
+            switch (cameraDirection)
+            {
+                case NORTH:
+                    camera.getRotation().set();
+                    camera.setPosition(player.getPosition());
+                    camera.moveUp(5);
+                    camera.moveBackward(3);
+                    camera.rotateX(-45);
+                    break;
 
-            case SOUTH:
-                camera.getRotation().set();
-                camera.setPosition(player.getPosition());
-                camera.moveUp(5);
-                camera.moveForward(3);
-                camera.rotateY(180);
-                camera.rotateX(-45);
-                break;
+                case SOUTH:
+                    camera.getRotation().set();
+                    camera.setPosition(player.getPosition());
+                    camera.moveUp(5);
+                    camera.moveForward(3);
+                    camera.rotateY(180);
+                    camera.rotateX(-45);
+                    break;
 
-            case EAST:
-                camera.getRotation().set();
-                camera.setPosition(player.getPosition());
-                camera.moveUp(5);
-                camera.moveLeft(3);
-                camera.rotateY(-90);
-                camera.rotateX(-45);
-                break;
+                case EAST:
+                    camera.getRotation().set();
+                    camera.setPosition(player.getPosition());
+                    camera.moveUp(5);
+                    camera.moveLeft(3);
+                    camera.rotateY(-90);
+                    camera.rotateX(-45);
+                    break;
 
-            case WEST:
-                camera.getRotation().set();
-                camera.setPosition(player.getPosition());
-                camera.moveUp(5);
-                camera.moveRight(3);
-                camera.rotateY(90);
-                camera.rotateX(-45);
-                break;
+                case WEST:
+                    camera.getRotation().set();
+                    camera.setPosition(player.getPosition());
+                    camera.moveUp(5);
+                    camera.moveRight(3);
+                    camera.rotateY(90);
+                    camera.rotateX(-45);
+                    break;
+            }
+        }
+        else
+        {
+            if (Keyboard.isPressed('W'))
+                camera.moveForward(4 * delta);
+
+            if (Keyboard.isPressed('S'))
+                camera.moveBackward(4 * delta);
+
+            if (Keyboard.isPressed('A'))
+                camera.moveLeft(4 * delta);
+
+            if (Keyboard.isPressed('D'))
+                camera.moveRight(4 * delta);
+
+            if (Keyboard.isPressed('Q'))
+                camera.moveUp(4 * delta);
+
+            if (Keyboard.isPressed('E'))
+                camera.moveDown(4 * delta);
+
+            if (Keyboard.isPressed(Keyboard.KEY_UP))
+                camera.rotateX(45 * delta);
+
+            if (Keyboard.isPressed(Keyboard.KEY_DOWN))
+                camera.rotateX(-45 * delta);
+
+            if (Keyboard.isPressed(Keyboard.KEY_LEFT))
+                camera.rotateY(45 * delta);
+
+            if (Keyboard.isPressed(Keyboard.KEY_RIGHT))
+                camera.rotateY(-45 * delta);
         }
 
         // Smoothly interpolate the camera
@@ -254,6 +304,14 @@ public class PlayState extends GameState
         float x = Display.getWidth() - g2d.getFont().getWidth(scoreString) - 10;
         float y = Display.getHeight() - g2d.getFont().getHeight() - 10;
         g2d.drawString(scoreString, x, y);
+
+        if (freeCamera)
+        {
+            g2d.setColor(Color.RED);
+            g2d.drawRect(10, 10, Display.getWidth() - 20, Display.getHeight() - 20);
+            g2d.drawRect(9, 9, Display.getWidth() - 18, Display.getHeight() - 18);
+            g2d.drawString("FREE MODE", 20, Display.getHeight() - g2d.getFont().getHeight() - 20);
+        }
     }
 
     @Override

@@ -27,6 +27,7 @@ public final class Resources
         public static Model SPHERE2;
         public static Model CONE;
         public static Model COLLECT;
+        public static Model THORNS;
     }
 
     public static void load()
@@ -41,6 +42,7 @@ public final class Resources
         int modSphere2ID = loader.loadResource(Model.class, "resources/sphere2.obj");
         int modConeID    = loader.loadResource(Model.class, "resources/cone.obj");
         int modCollectID = loader.loadResource(Model.class, "resources/piece.obj");
+        int modThornsID  = loader.loadResource(Model.class, "resources/thorns.obj");
 
         int fontBloxID = loader.loadResource(TrueTypeFont.class, "resources/Blox2.ttf");
 
@@ -53,6 +55,7 @@ public final class Resources
         Models.SPHERE2 = loader.getResource(modSphere2ID);
         Models.CONE    = loader.getResource(modConeID);
         Models.COLLECT = loader.getResource(modCollectID);
+        Models.THORNS  = loader.getResource(modThornsID);
 
         // Tweak it a bit since OBJ doesn't support opacity attribute
         Models.SPHERE2.getMeshes().get(0).getMaterial().setDiffuse(Color.TRANSPARENT).setAmbient(Color.GRAY);
@@ -60,7 +63,6 @@ public final class Resources
         TrueTypeFont font = loader.getResource(fontBloxID);
         font.setSize(30);
         SilenceEngine.graphics.getGraphics2D().setFont(font);
-
     }
 
     public static void dispose()

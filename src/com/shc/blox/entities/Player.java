@@ -146,5 +146,11 @@ public class Player extends Entity3D
             other.destroy();
             PlayState.SCORE += 10;
         }
+
+        if (other instanceof Thorns)
+        {
+            PlayState.SCORE -= PlayState.LEVEL * 50;
+            PlayState.reloadLevel();
+        }
     }
 }

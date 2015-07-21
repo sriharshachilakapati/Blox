@@ -14,20 +14,20 @@
 !NORTH
 
 # Info lines on the level
-@try to ESCAPE from the thunder balls
+@try to ESCAPE from the THORNS
 
     FFF   FFF   FFF
-    FEFFTFFCF   FSF
-    FFF   FFF   FFF
-     F           F
-     t           t
-     F           F
+    FEFFXFFCF   FSF             FFF
+    FFF   FFF   FFF              G
+     F           F              FFF
+     X           X              XXX
+     F           F              FFF
     FFF         FFF
     FCF         FCF
-    FFF         FFF
+    FFF         FFF   FFF  X  FFF
+                       FEF X FCCF
+     X                FFF  X  FFF
 
-
-                FFF     FFF
-    FFF         FEFFFTFFFGF
-    FPF         FFF     FFF
+    FFF
+    FPF
     FFF
