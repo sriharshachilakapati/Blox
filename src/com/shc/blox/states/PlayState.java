@@ -21,6 +21,7 @@ import com.shc.silenceengine.graphics.Graphics2D;
 import com.shc.silenceengine.graphics.cameras.PerspCam;
 import com.shc.silenceengine.input.Keyboard;
 import com.shc.silenceengine.io.FilePath;
+import com.shc.silenceengine.math.Transform;
 import com.shc.silenceengine.math.Vector3;
 import com.shc.silenceengine.scene.Scene3D;
 import com.shc.silenceengine.scene.lights.PointLight;
@@ -32,30 +33,52 @@ import com.shc.silenceengine.utils.MathUtils;
  */
 public class PlayState extends GameState
 {
-    private Scene3D scene;
-
-    private PerspCam camera;
-    private Player   player;
+    private static boolean reloadLevel = false;
+    private static boolean freeCamera  = false;
 
     public static Direction cameraDirection;
 
     public static int LEVEL = 1;
     public static int SCORE = 0;
 
-    private PerspCam        camera2;
+    private Scene3D scene;
+
+    private PerspCam camera;
+    private PerspCam camera2;
+    private PerspCam camera3;
+    private Player   player;
+
     private PointLight      camLight;
     private SceneCollider3D collider;
     private String          message;
 
-    private static boolean reloadLevel = false;
-    private static boolean freeCamera = false;
+    private Transform earthTransform = new Transform();
 
     public PlayState()
     {
         camera = new PerspCam().initProjection(70, Display.getAspectRatio(), 1, 100);
         camera2 = new PerspCam().initProjection(70, Display.getAspectRatio(), 1, 100);
+        camera3 = new PerspCam().initProjection(70, Display.getAspectRatio(), 1, 1000);
+        camera3.setPosition(new Vector3(0, 70, 50)).lookAt(Vector3.ZERO);
 
+        earthTransform.rotateSelf(90, 0, 0);
         loadLevel("levels/level" + LEVEL + ".lvl");
+    }
+
+    public static void nextLevel()
+    {
+        if (!FilePath.getResourceFile("levels/level" + (++LEVEL) + ".lvl").exists())
+        {
+            LEVEL = 1;
+            SCORE = 0;
+        }
+
+        reloadLevel();
+    }
+
+    public static void reloadLevel()
+    {
+        reloadLevel = true;
     }
 
     private void loadLevel(String filename)
@@ -101,10 +124,18 @@ public class PlayState extends GameState
             {
                 switch (line.trim().replaceFirst("!", "").trim().toUpperCase().charAt(0))
                 {
-                    case 'N': cameraDirection = Direction.NORTH; break;
-                    case 'S': cameraDirection = Direction.SOUTH; break;
-                    case 'E': cameraDirection = Direction.EAST;  break;
-                    case 'W': cameraDirection = Direction.WEST;  break;
+                    case 'N':
+                        cameraDirection = Direction.NORTH;
+                        break;
+                    case 'S':
+                        cameraDirection = Direction.SOUTH;
+                        break;
+                    case 'E':
+                        cameraDirection = Direction.EAST;
+                        break;
+                    case 'W':
+                        cameraDirection = Direction.WEST;
+                        break;
                 }
 
                 continue;
@@ -121,8 +152,11 @@ public class PlayState extends GameState
                         scene.addChild(new Goal(new Vector3(x, 3, z)));
                         break;
 
-                    case 'P': scene.addChild(player = new Player(new Vector3(x, 5, z)));
-                    case 'F': scene.addChild(new Floor(new Vector3(x, 0, z))); break;
+                    case 'P':
+                        scene.addChild(player = new Player(new Vector3(x, 5, z)));
+                    case 'F':
+                        scene.addChild(new Floor(new Vector3(x, 0, z)));
+                        break;
 
                     case 'T':
                         scene.addChild(new ThunderBall(new Vector3(x, 1, z), MathUtils.random_range(0, 2) == 0 ? Direction.NORTH : Direction.SOUTH));
@@ -286,13 +320,18 @@ public class PlayState extends GameState
 
         if (reloadLevel)
             Game.setGameState(new PlayState());
+
+        earthTransform.rotateSelf(0, 15 * delta, 0);
+        camera3.setPosition(camera3.getPosition().set(0, 70, 50).addSelf(camera2.getPosition())).lookAt(Vector3.ZERO);
     }
 
     @Override
     public void render(float delta, Batcher batcher)
     {
         Graphics2D g2d = SilenceEngine.graphics.getGraphics2D();
-        g2d.drawTexture(Resources.Textures.EARTH, 0, 0, Display.getWidth(), Display.getHeight());
+
+        camera3.apply();
+        Resources.Models.EARTH.render(batcher, earthTransform);
 
         camera2.apply();
         scene.render(delta);
@@ -319,22 +358,7 @@ public class PlayState extends GameState
     {
         camera.initProjection(70, Display.getAspectRatio(), 1, 100);
         camera2.initProjection(70, Display.getAspectRatio(), 1, 100);
+        camera3.initProjection(70, Display.getAspectRatio(), 1, 1000);
         SilenceEngine.graphics.getGraphics2D().getCamera().initProjection(Display.getWidth(), Display.getHeight());
-    }
-
-    public static void nextLevel()
-    {
-        if (!FilePath.getResourceFile("levels/level" + (++LEVEL) + ".lvl").exists())
-        {
-            LEVEL = 1;
-            SCORE = 0;
-        }
-
-        reloadLevel();
-    }
-
-    public static void reloadLevel()
-    {
-        reloadLevel = true;
     }
 }

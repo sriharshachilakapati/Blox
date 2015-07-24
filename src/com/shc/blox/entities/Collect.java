@@ -12,7 +12,7 @@ public class Collect extends Entity3D
 {
     public Collect(Vector3 position)
     {
-        super(Resources.Models.COLLECT, new Cuboid(position, 0.2f, 0.2f, 0.2f));
+        super(Resources.Models.COLLECT, new Cuboid(position, 0.4f, 0.4f, 0.4f));
         setPosition(position);
     }
 
@@ -21,4 +21,11 @@ public class Collect extends Entity3D
     {
         rotate(90 * delta, 90 * delta, 0);
     }
+
+//    @Override
+//    public void render(float delta, ModelBatch batch)
+//    {
+//        super.render(delta, batch);
+//        RenderUtils.tracePolyhedron(SilenceEngine.graphics.getBatcher(), getPolyhedron(), Color.RED);
+//    }
 }

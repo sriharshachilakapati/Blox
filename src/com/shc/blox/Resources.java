@@ -5,7 +5,6 @@ import com.shc.silenceengine.core.SilenceEngine;
 import com.shc.silenceengine.graphics.Color;
 import com.shc.silenceengine.graphics.TrueTypeFont;
 import com.shc.silenceengine.graphics.models.Model;
-import com.shc.silenceengine.graphics.opengl.Texture;
 
 /**
  * @author Sri Harsha Chilakapati
@@ -13,11 +12,6 @@ import com.shc.silenceengine.graphics.opengl.Texture;
 public final class Resources
 {
     private static ResourceLoader loader;
-
-    public static final class Textures
-    {
-        public static Texture EARTH;
-    }
 
     public static final class Models
     {
@@ -28,13 +22,12 @@ public final class Resources
         public static Model CONE;
         public static Model COLLECT;
         public static Model THORNS;
+        public static Model EARTH;
     }
 
     public static void load()
     {
         loader = new ResourceLoader();
-
-        int texEarthID = loader.loadResource(Texture.class, "resources/texture-earth.png");
 
         int modFloorID   = loader.loadResource(Model.class, "resources/floor.obj");
         int modPlayerID  = loader.loadResource(Model.class, "resources/player.obj");
@@ -43,12 +36,12 @@ public final class Resources
         int modConeID    = loader.loadResource(Model.class, "resources/cone.obj");
         int modCollectID = loader.loadResource(Model.class, "resources/piece.obj");
         int modThornsID  = loader.loadResource(Model.class, "resources/thorns.obj");
+        int modEarthID   = loader.loadResource(Model.class, "resources/earth.obj");
 
         int fontBloxID = loader.loadResource(TrueTypeFont.class, "resources/Blox2.ttf");
 
         loader.startLoading();
 
-        Textures.EARTH = loader.getResource(texEarthID);
         Models.FLOOR   = loader.getResource(modFloorID);
         Models.PLAYER  = loader.getResource(modPlayerID);
         Models.SPHERE  = loader.getResource(modSphereID);
@@ -56,9 +49,11 @@ public final class Resources
         Models.CONE    = loader.getResource(modConeID);
         Models.COLLECT = loader.getResource(modCollectID);
         Models.THORNS  = loader.getResource(modThornsID);
+        Models.EARTH   = loader.getResource(modEarthID);
 
         // Tweak it a bit since OBJ doesn't support opacity attribute
         Models.SPHERE2.getMeshes().get(0).getMaterial().setDiffuse(Color.TRANSPARENT).setAmbient(Color.GRAY);
+        Models.EARTH.getMeshes().get(0).getMaterial().setDiffuse(Color.TRANSPARENT).setAmbient(Color.GRAY);
 
         TrueTypeFont font = loader.getResource(fontBloxID);
         font.setSize(30);
