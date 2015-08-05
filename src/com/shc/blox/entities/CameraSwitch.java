@@ -23,10 +23,10 @@ public class CameraSwitch extends Entity3D
 
         switch (direction)
         {
-            case NORTH: rotate(90, 0, 0); break;
-            case SOUTH: rotate(-90, 0, 0); break;
-            case EAST: rotate(0, 0, 90); break;
-            case WEST: rotate(0, 0, -90); break;
+            case NORTH: rotate(-90, 0,   0); break;
+            case SOUTH: rotate(+90, 0,   0); break;
+            case EAST:  rotate(  0, 0, -90); break;
+            case WEST:  rotate(  0, 0, +90); break;
         }
     }
 

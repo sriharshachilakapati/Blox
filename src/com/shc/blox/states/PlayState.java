@@ -61,7 +61,6 @@ public class PlayState extends GameState
         camera3 = new PerspCam().initProjection(70, Display.getAspectRatio(), 1, 1000);
         camera3.setPosition(new Vector3(0, 70, 50)).lookAt(Vector3.ZERO);
 
-        earthTransform.rotateSelf(90, 0, 0);
         loadLevel("levels/level" + LEVEL + ".lvl");
     }
 

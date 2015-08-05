@@ -21,11 +21,4 @@ public class Collect extends Entity3D
     {
         rotate(90 * delta, 90 * delta, 0);
     }
-
-//    @Override
-//    public void render(float delta, ModelBatch batch)
-//    {
-//        super.render(delta, batch);
-//        RenderUtils.tracePolyhedron(SilenceEngine.graphics.getBatcher(), getPolyhedron(), Color.RED);
-//    }
 }

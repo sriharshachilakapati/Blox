@@ -51,9 +51,9 @@ public final class Resources
         Models.THORNS  = loader.getResource(modThornsID);
         Models.EARTH   = loader.getResource(modEarthID);
 
-        // Tweak it a bit since OBJ doesn't support opacity attribute
-        Models.SPHERE2.getMeshes().get(0).getMaterial().setDiffuse(Color.TRANSPARENT).setAmbient(Color.GRAY);
-        Models.EARTH.getMeshes().get(0).getMaterial().setDiffuse(Color.TRANSPARENT).setAmbient(Color.GRAY);
+        // Modify the ambient color so that we can see the earth
+        // (No light acts on it because it is not in scene)
+        Models.EARTH.getMeshes().get(0).getMaterial().setAmbient(Color.GRAY);
 
         TrueTypeFont font = loader.getResource(fontBloxID);
         font.setSize(30);
