@@ -54,9 +54,9 @@ public final class Resources
         // Modify the ambient color so that we can see the earth
         // (No light acts on it because it is not in scene)
         Models.EARTH.getMeshes().get(0).getMaterial().setAmbient(Color.GRAY);
+        Models.EARTH.setPrefersStatic(true);
 
-        TrueTypeFont font = loader.getResource(fontBloxID);
-        font.setSize(30);
+        TrueTypeFont font = ((TrueTypeFont) loader.getResource(fontBloxID)).setSize(30);
         SilenceEngine.graphics.getGraphics2D().setFont(font);
     }
 
