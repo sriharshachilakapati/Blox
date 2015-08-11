@@ -1,6 +1,6 @@
 package com.shc.blox.entities;
 
-import com.shc.blox.ControllerMapping;
+import com.shc.blox.PlayerController;
 import com.shc.blox.Resources;
 import com.shc.blox.states.PlayState;
 import com.shc.silenceengine.input.Controller;
@@ -35,7 +35,7 @@ public class Player extends Entity3D
         if (getPosition().y < -10)
             PlayState.SCORE -= PlayState.LEVEL * 50;
 
-        if (Keyboard.isClicked('R') || getPosition().y < -10 || Controller.isClicked(ControllerMapping.BUTTON_START, 0))
+        if (Keyboard.isClicked('R') || getPosition().y < -10 || Controller.isClicked(PlayerController.BUTTON_START, 0))
             PlayState.reloadLevel();
 
         getVelocity().set(0, 0, 0);
@@ -73,30 +73,30 @@ public class Player extends Entity3D
         }
 
         // Simple movement on the maze
-        if (Keyboard.isPressed('W') || Controller.isPressed(ControllerMapping.BUTTON_DPAD_UP, 0))
+        if (Keyboard.isPressed('W') || Controller.isPressed(PlayerController.BUTTON_DPAD_UP, 0))
             getVelocity().addSelf(temp.set(forward)).normalizeSelf().scaleSelf(delta * 4);
 
-        if (Keyboard.isPressed('S') || Controller.isPressed(ControllerMapping.BUTTON_DPAD_DOWN, 0))
+        if (Keyboard.isPressed('S') || Controller.isPressed(PlayerController.BUTTON_DPAD_DOWN, 0))
             getVelocity().addSelf(temp.set(forward).normalizeSelf().scaleSelf(delta * -4));
 
-        if (Keyboard.isPressed('A') || Controller.isPressed(ControllerMapping.BUTTON_DPAD_LEFT, 0))
+        if (Keyboard.isPressed('A') || Controller.isPressed(PlayerController.BUTTON_DPAD_LEFT, 0))
             getVelocity().addSelf(temp.set(right).normalizeSelf().scaleSelf(delta * -4));
 
-        if (Keyboard.isPressed('D') || Controller.isPressed(ControllerMapping.BUTTON_DPAD_RIGHT, 0))
+        if (Keyboard.isPressed('D') || Controller.isPressed(PlayerController.BUTTON_DPAD_RIGHT, 0))
             getVelocity().addSelf(temp.set(right).normalizeSelf().scaleSelf(delta * 4));
 
         // Controller axes
         getVelocity().addSelf(temp.set(forward).normalizeSelf()
-                                  .scaleSelf(Controller.getAxe(ControllerMapping.AXE_LS_Y, 0) * delta * -4));
+                                  .scaleSelf(Controller.getAxe(PlayerController.AXE_LS_Y, 0) * delta * -4));
         getVelocity().addSelf(temp.set(right).normalizeSelf()
-                                  .scaleSelf(Controller.getAxe(ControllerMapping.AXE_LS_X, 0) * delta * 4));
+                                  .scaleSelf(Controller.getAxe(PlayerController.AXE_LS_X, 0) * delta * 4));
 
         Vector3.REUSABLE_STACK.push(temp);
         Vector3.REUSABLE_STACK.push(forward);
         Vector3.REUSABLE_STACK.push(right);
 
         // Jumping
-        if (canJump && (Keyboard.isClicked(Keyboard.KEY_SPACE) || Controller.isClicked(ControllerMapping.BUTTON_JUMP, 0)))
+        if (canJump && (Keyboard.isClicked(Keyboard.KEY_SPACE) || Controller.isClicked(PlayerController.BUTTON_JUMP, 0)))
         {
             canJump = false;
             inFall = false;

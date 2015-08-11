@@ -14,21 +14,15 @@ public class Blox extends Game
     {
         Display.setTitle("Blox - SilenceEngine 3D Demo");
         Display.setSize(1366, 768);
-
-//        Display.setFullScreen(true);
-//        Display.hideCursor();
     }
 
     @Override
     public void init()
     {
         Resources.load();
-        ControllerMapping.mapController();
+        PlayerController.map();
 
         setGameState(new PlayState());
-
-        // Set to 10% Blue
-//        SilenceEngine.graphics.setClearColor(0, 0, 0.1f, 1);
     }
 
     @Override

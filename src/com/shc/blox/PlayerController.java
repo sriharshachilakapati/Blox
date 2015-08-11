@@ -5,7 +5,7 @@ import com.shc.silenceengine.input.Controller;
 /**
  * @author Sri Harsha Chilakapati
  */
-public final class ControllerMapping
+public final class PlayerController
 {
     public static int BUTTON_DPAD_UP;
     public static int BUTTON_DPAD_DOWN;
@@ -18,7 +18,7 @@ public final class ControllerMapping
     public static int AXE_LS_X;
     public static int AXE_LS_Y;
 
-    public static void mapController()
+    public static void map()
     {
         if (Controller.getConnectedControllers().length == 0)
             return;

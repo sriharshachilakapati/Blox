@@ -1,6 +1,7 @@
 package com.shc.blox.states;
 
 import com.shc.blox.Direction;
+import com.shc.blox.Level;
 import com.shc.blox.Resources;
 import com.shc.blox.entities.CameraSwitch;
 import com.shc.blox.entities.Collect;
@@ -23,10 +24,7 @@ import com.shc.silenceengine.input.Keyboard;
 import com.shc.silenceengine.io.FilePath;
 import com.shc.silenceengine.math.Transform;
 import com.shc.silenceengine.math.Vector3;
-import com.shc.silenceengine.scene.Scene3D;
 import com.shc.silenceengine.scene.lights.PointLight;
-import com.shc.silenceengine.utils.FileUtils;
-import com.shc.silenceengine.utils.MathUtils;
 
 /**
  * @author Sri Harsha Chilakapati
@@ -41,16 +39,14 @@ public class PlayState extends GameState
     public static int LEVEL = 1;
     public static int SCORE = 0;
 
-    private Scene3D scene;
+    private Level level;
 
     private PerspCam camera;
     private PerspCam camera2;
     private PerspCam camera3;
-    private Player   player;
 
     private PointLight      camLight;
     private SceneCollider3D collider;
-    private String          message;
 
     private Transform earthTransform = new Transform();
 
@@ -85,17 +81,14 @@ public class PlayState extends GameState
         reloadLevel = false;
         freeCamera = false;
 
-        message = "";
+        if (level != null)
+            level.destroy();
 
-        float x, z;
-
-        if (scene != null)
-            scene.destroy();
-
-        scene = new Scene3D();
+        level = Level.load(filename);
+        cameraDirection = level.getInitialDirection();
 
         collider = new SceneCollider3D(new DynamicTree3D());
-        collider.setScene(scene);
+        collider.setScene(level.getScene());
 
         collider.register(Player.class, Floor.class);
         collider.register(Player.class, Goal.class);
@@ -104,109 +97,7 @@ public class PlayState extends GameState
         collider.register(Player.class, ThunderBall.class);
         collider.register(CameraSwitch.class, Player.class);
 
-        x = z = 0;
-
-        String[] lines = FileUtils.readLinesToStringArray(FilePath.getResourceFile(filename));
-
-        for (String line : lines)
-        {
-            if (line.trim().startsWith("#"))
-                continue;
-
-            if (line.trim().startsWith("@"))
-            {
-                message += line.trim().replaceFirst("@", "") + "\n";
-                continue;
-            }
-
-            if (line.trim().startsWith("!"))
-            {
-                switch (line.trim().replaceFirst("!", "").trim().toUpperCase().charAt(0))
-                {
-                    case 'N':
-                        cameraDirection = Direction.NORTH;
-                        break;
-                    case 'S':
-                        cameraDirection = Direction.SOUTH;
-                        break;
-                    case 'E':
-                        cameraDirection = Direction.EAST;
-                        break;
-                    case 'W':
-                        cameraDirection = Direction.WEST;
-                        break;
-                }
-
-                continue;
-            }
-
-            char[] tiles = line.toCharArray();
-
-            for (char ch : tiles)
-            {
-                switch (ch)
-                {
-                    case 'G':
-                        scene.addChild(new Floor(new Vector3(x, 0, z)));
-                        scene.addChild(new Goal(new Vector3(x, 3, z)));
-                        break;
-
-                    case 'P':
-                        scene.addChild(player = new Player(new Vector3(x, 5, z)));
-                    case 'F':
-                        scene.addChild(new Floor(new Vector3(x, 0, z)));
-                        break;
-
-                    case 'T':
-                        scene.addChild(new ThunderBall(new Vector3(x, 1, z), MathUtils.random_range(0, 2) == 0 ? Direction.NORTH : Direction.SOUTH));
-                        scene.addChild(new Floor(new Vector3(x, 0, z)));
-                        break;
-
-                    case 't':
-                        scene.addChild(new ThunderBall(new Vector3(x, 1, z), MathUtils.random_range(0, 2) == 0 ? Direction.EAST : Direction.WEST));
-                        scene.addChild(new Floor(new Vector3(x, 0, z)));
-                        break;
-
-                    case 'C':
-                        scene.addChild(new Collect(new Vector3(x, 3, z)));
-                        scene.addChild(new Floor(new Vector3(x, 0, z)));
-                        break;
-
-                    case 'N':
-                        scene.addChild(new CameraSwitch(new Vector3(x, 1, z), Direction.NORTH));
-                        scene.addChild(new Floor(new Vector3(x, 0, z)));
-                        break;
-
-                    case 'E':
-                        scene.addChild(new CameraSwitch(new Vector3(x, 1, z), Direction.EAST));
-                        scene.addChild(new Floor(new Vector3(x, 0, z)));
-                        break;
-
-                    case 'W':
-                        scene.addChild(new CameraSwitch(new Vector3(x, 1, z), Direction.WEST));
-                        scene.addChild(new Floor(new Vector3(x, 0, z)));
-                        break;
-
-                    case 'S':
-                        scene.addChild(new CameraSwitch(new Vector3(x, 1, z), Direction.SOUTH));
-                        scene.addChild(new Floor(new Vector3(x, 0, z)));
-                        break;
-
-                    case 'X':
-                        scene.addChild(new Thorns(new Vector3(x, 0.8f, z)));
-                        scene.addChild(new Floor(new Vector3(x, 0, z)));
-                        break;
-                }
-
-                x++;
-            }
-
-            z++;
-            x = 0;
-        }
-
-        camLight = null;
-        scene.addComponent(camLight = new PointLight(new Vector3(), Color.WHITE));
+        level.getScene().addComponent(camLight = new PointLight(new Vector3(), Color.WHITE));
     }
 
     @Override
@@ -230,86 +121,12 @@ public class PlayState extends GameState
         if (Keyboard.isClicked(Keyboard.KEY_TAB))
             freeCamera = !freeCamera;
 
-        if (!freeCamera)
-        {
-            scene.update(delta);
-            collider.checkCollisions();
-        }
+        if (freeCamera)
+            updateFreeMode(delta);
+        else
+            updatePlayMode(delta);
 
         SCORE = Math.max(SCORE, 0);
-
-        if (!freeCamera)
-        {
-            switch (cameraDirection)
-            {
-                case NORTH:
-                    camera.getRotation().set();
-                    camera.setPosition(player.getPosition());
-                    camera.moveUp(5);
-                    camera.moveBackward(3);
-                    camera.rotateX(-45);
-                    break;
-
-                case SOUTH:
-                    camera.getRotation().set();
-                    camera.setPosition(player.getPosition());
-                    camera.moveUp(5);
-                    camera.moveForward(3);
-                    camera.rotateY(180);
-                    camera.rotateX(-45);
-                    break;
-
-                case EAST:
-                    camera.getRotation().set();
-                    camera.setPosition(player.getPosition());
-                    camera.moveUp(5);
-                    camera.moveLeft(3);
-                    camera.rotateY(-90);
-                    camera.rotateX(-45);
-                    break;
-
-                case WEST:
-                    camera.getRotation().set();
-                    camera.setPosition(player.getPosition());
-                    camera.moveUp(5);
-                    camera.moveRight(3);
-                    camera.rotateY(90);
-                    camera.rotateX(-45);
-                    break;
-            }
-        }
-        else
-        {
-            if (Keyboard.isPressed('W'))
-                camera.moveForward(4 * delta);
-
-            if (Keyboard.isPressed('S'))
-                camera.moveBackward(4 * delta);
-
-            if (Keyboard.isPressed('A'))
-                camera.moveLeft(4 * delta);
-
-            if (Keyboard.isPressed('D'))
-                camera.moveRight(4 * delta);
-
-            if (Keyboard.isPressed('Q'))
-                camera.moveUp(4 * delta);
-
-            if (Keyboard.isPressed('E'))
-                camera.moveDown(4 * delta);
-
-            if (Keyboard.isPressed(Keyboard.KEY_UP))
-                camera.rotateX(45 * delta);
-
-            if (Keyboard.isPressed(Keyboard.KEY_DOWN))
-                camera.rotateX(-45 * delta);
-
-            if (Keyboard.isPressed(Keyboard.KEY_LEFT))
-                camera.rotateY(45 * delta);
-
-            if (Keyboard.isPressed(Keyboard.KEY_RIGHT))
-                camera.rotateY(-45 * delta);
-        }
 
         // Smoothly interpolate the camera
         camera2.slerp(camera, delta * 4);
@@ -324,6 +141,85 @@ public class PlayState extends GameState
         camera3.setPosition(camera3.getPosition().set(0, 70, 50).addSelf(camera2.getPosition())).lookAt(Vector3.ZERO);
     }
 
+    private void updatePlayMode(float delta)
+    {
+        level.update(delta);
+        collider.checkCollisions();
+
+        Player player = level.getPlayer();
+
+        switch (cameraDirection)
+        {
+            case NORTH:
+                camera.getRotation().set();
+                camera.setPosition(player.getPosition());
+                camera.moveUp(5);
+                camera.moveBackward(3);
+                camera.rotateX(-45);
+                break;
+
+            case SOUTH:
+                camera.getRotation().set();
+                camera.setPosition(player.getPosition());
+                camera.moveUp(5);
+                camera.moveForward(3);
+                camera.rotateY(180);
+                camera.rotateX(-45);
+                break;
+
+            case EAST:
+                camera.getRotation().set();
+                camera.setPosition(player.getPosition());
+                camera.moveUp(5);
+                camera.moveLeft(3);
+                camera.rotateY(-90);
+                camera.rotateX(-45);
+                break;
+
+            case WEST:
+                camera.getRotation().set();
+                camera.setPosition(player.getPosition());
+                camera.moveUp(5);
+                camera.moveRight(3);
+                camera.rotateY(90);
+                camera.rotateX(-45);
+                break;
+        }
+    }
+
+    private void updateFreeMode(float delta)
+    {
+        if (Keyboard.isPressed('W'))
+            camera.moveForward(4 * delta);
+
+        if (Keyboard.isPressed('S'))
+            camera.moveBackward(4 * delta);
+
+        if (Keyboard.isPressed('A'))
+            camera.moveLeft(4 * delta);
+
+        if (Keyboard.isPressed('D'))
+            camera.moveRight(4 * delta);
+
+        if (Keyboard.isPressed('Q'))
+            camera.moveUp(4 * delta);
+
+        if (Keyboard.isPressed('E'))
+            camera.moveDown(4 * delta);
+
+        if (Keyboard.isPressed(Keyboard.KEY_UP))
+            camera.rotateX(45 * delta);
+
+        if (Keyboard.isPressed(Keyboard.KEY_DOWN))
+            camera.rotateX(-45 * delta);
+
+        if (Keyboard.isPressed(Keyboard.KEY_LEFT))
+            camera.rotateY(45 * delta);
+
+        if (Keyboard.isPressed(Keyboard.KEY_RIGHT))
+            camera.rotateY(-45 * delta);
+    }
+
     @Override
     public void render(float delta, Batcher batcher)
     {
@@ -333,10 +229,10 @@ public class PlayState extends GameState
         Resources.Models.EARTH.render(batcher, earthTransform);
 
         camera2.apply();
-        scene.render(delta);
+        level.render(delta);
 
         g2d.setColor(Color.WHITE);
-        g2d.drawString(message, 10, 10);
+        g2d.drawString(level.getMessage(), 10, 10);
 
         String scoreString = String.format("%d PTAS", SCORE);
         float x = Display.getWidth() - g2d.getFont().getWidth(scoreString) - 10;
