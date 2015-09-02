@@ -37,6 +37,7 @@ public final class Level
         Level level = new Level();
 
         level.scene = new Scene3D();
+        level.message = "";
 
         float x = 0, z = 0;
 
