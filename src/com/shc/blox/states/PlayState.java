@@ -8,7 +8,7 @@ import com.shc.blox.entities.Collect;
 import com.shc.blox.entities.Floor;
 import com.shc.blox.entities.Goal;
 import com.shc.blox.entities.Player;
-import com.shc.blox.entities.Thorns;
+import com.shc.blox.entities.Spikes;
 import com.shc.blox.entities.ThunderBall;
 import com.shc.silenceengine.collision.broadphase.DynamicTree3D;
 import com.shc.silenceengine.collision.colliders.SceneCollider3D;
@@ -92,7 +92,7 @@ public class PlayState extends GameState
 
         collider.register(Player.class, Floor.class);
         collider.register(Player.class, Goal.class);
-        collider.register(Player.class, Thorns.class);
+        collider.register(Player.class, Spikes.class);
         collider.register(Player.class, Collect.class);
         collider.register(Player.class, ThunderBall.class);
         collider.register(CameraSwitch.class, Player.class);

@@ -105,14 +105,14 @@ public class Player extends Entity3D
 
         if (!canJump && !inFall)
         {
-            getVelocity().addSelf(0, delta * 10, 0);
+            getVelocity().addSelf(0, delta * 4 * 2, 0);
 
             if (getPosition().y > jumpTo)
                 inFall = true;
         }
 
         // Gravity
-        getVelocity().subtractSelf(0, delta * 4, 0);
+        getVelocity().subtractSelf(0, delta * 5, 0);
 
         canJump = false;
     }
@@ -147,7 +147,7 @@ public class Player extends Entity3D
             PlayState.SCORE += 10;
         }
 
-        if (other instanceof Thorns)
+        if (other instanceof Spikes)
         {
             PlayState.SCORE -= PlayState.LEVEL * 50;
             PlayState.reloadLevel();

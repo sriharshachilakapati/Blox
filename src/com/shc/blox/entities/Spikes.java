@@ -8,11 +8,11 @@ import com.shc.silenceengine.scene.entity.Entity3D;
 /**
  * @author Sri Harsha Chilakapati
  */
-public class Thorns extends Entity3D
+public class Spikes extends Entity3D
 {
-    public Thorns(Vector3 position)
+    public Spikes(Vector3 position)
     {
-        super(Resources.Models.THORNS, new Cuboid(position, 0.8f, 0.8f, 0.8f));
+        super(Resources.Models.SPIKES, new Cuboid(position, 0.8f, 0.8f, 0.8f));
         setPosition(position);
     }
 }

@@ -8,13 +8,13 @@
 # C stands for a collectible
 # T stands for ThunderBall moving North and South
 # t stands for ThunderBall moving East and West
-# X stands for Thorns
+# X stands for Spikes
 
 # The initial camera direction
 !NORTH
 
 # Info lines on the level
-@try to ESCAPE from the THORNS
+@try to ESCAPE from the SPIKES
 
     FFF   FFF   FFF
     FEFFXFFCF   FSF             FFF

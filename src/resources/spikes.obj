@@ -1,6 +1,6 @@
 # Blender v2.73 (sub 0) OBJ File: ''
 # www.blender.org
-mtllib thorns.mtl
+mtllib spikes.mtl
 o Cone
 v 0.000000 -0.290136 -0.100000
 v 0.019509 -0.290136 -0.098079

@@ -8,7 +8,7 @@
 # C stands for a collectible
 # T stands for ThunderBall moving North and South
 # t stands for ThunderBall moving East and West
-# X stands for Thorns
+# X stands for Spikes
 
 # The initial direction of the camera
 !NORTH

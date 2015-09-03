@@ -5,7 +5,7 @@ import com.shc.blox.entities.Collect;
 import com.shc.blox.entities.Floor;
 import com.shc.blox.entities.Goal;
 import com.shc.blox.entities.Player;
-import com.shc.blox.entities.Thorns;
+import com.shc.blox.entities.Spikes;
 import com.shc.blox.entities.ThunderBall;
 import com.shc.silenceengine.io.FilePath;
 import com.shc.silenceengine.math.Vector3;
@@ -132,7 +132,7 @@ public final class Level
                         break;
 
                     case 'X':
-                        level.scene.addChild(new Thorns(new Vector3(x, 0.8f, z)));
+                        level.scene.addChild(new Spikes(new Vector3(x, 0.8f, z)));
                         level.scene.addChild(new Floor(new Vector3(x, 0, z)));
                         break;
                 }
