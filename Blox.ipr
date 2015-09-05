@@ -211,7 +211,9 @@
         <root url="jar://$PROJECT_DIR$/libs/lwjgl-natives.jar!/" />
       </CLASSES>
       <JAVADOC />
-      <SOURCES />
+      <SOURCES>
+        <root url="file://$PROJECT_DIR$/../SilenceEngine/src/main/java" />
+      </SOURCES>
     </library>
   </component>
 </project>
