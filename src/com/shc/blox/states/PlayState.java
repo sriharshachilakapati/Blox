@@ -137,7 +137,7 @@ public class PlayState extends GameState
         if (reloadLevel)
             Game.setGameState(new PlayState());
 
-        earthTransform.rotateSelf(0, 15 * delta, 0);
+        earthTransform.rotateSelf(0, 5 * delta, 0);
         camera3.setPosition(camera3.getPosition().set(0, 70, 50).addSelf(camera2.getPosition())).lookAt(Vector3.ZERO);
     }
 
