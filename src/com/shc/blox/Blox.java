@@ -9,6 +9,11 @@ import com.shc.silenceengine.core.Game;
  */
 public class Blox extends Game
 {
+    public static void main(String[] args)
+    {
+        new Blox().start();
+    }
+
     @Override
     public void preInit()
     {
@@ -29,10 +34,5 @@ public class Blox extends Game
     public void dispose()
     {
         Resources.dispose();
-    }
-
-    public static void main(String[] args)
-    {
-        new Blox().start();
     }
 }

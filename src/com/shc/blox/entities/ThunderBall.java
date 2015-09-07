@@ -30,10 +30,18 @@ public class ThunderBall extends Entity3D
 
         switch (velocityDir)
         {
-            case NORTH: setPosition(position.addSelf(+0, +0, +3)); break;
-            case EAST:  setPosition(position.addSelf(-3, +0, +0)); break;
-            case SOUTH: setPosition(position.addSelf(+0, +0, -3)); break;
-            case WEST:  setPosition(position.addSelf(+3, +0, +0)); break;
+            case NORTH:
+                setPosition(position.addSelf(+0, +0, +3));
+                break;
+            case EAST:
+                setPosition(position.addSelf(-3, +0, +0));
+                break;
+            case SOUTH:
+                setPosition(position.addSelf(+0, +0, -3));
+                break;
+            case WEST:
+                setPosition(position.addSelf(+3, +0, +0));
+                break;
         }
 
         GameTimer timer = new GameTimer(1.5, TimeUtils.Unit.SECONDS);
@@ -44,10 +52,18 @@ public class ThunderBall extends Entity3D
 
             switch (velocityDir)
             {
-                case NORTH: velocityDir = Direction.SOUTH; break;
-                case EAST:  velocityDir = Direction.WEST;  break;
-                case SOUTH: velocityDir = Direction.NORTH; break;
-                case WEST:  velocityDir = Direction.EAST;  break;
+                case NORTH:
+                    velocityDir = Direction.SOUTH;
+                    break;
+                case EAST:
+                    velocityDir = Direction.WEST;
+                    break;
+                case SOUTH:
+                    velocityDir = Direction.NORTH;
+                    break;
+                case WEST:
+                    velocityDir = Direction.EAST;
+                    break;
             }
 
             timer.start();
@@ -66,10 +82,18 @@ public class ThunderBall extends Entity3D
         if (!accepted)
             switch (velocityDir)
             {
-                case NORTH: getVelocity().set(+0, +0, -4).scaleSelf(delta); break;
-                case EAST:  getVelocity().set(+4, +0, +0).scaleSelf(delta); break;
-                case SOUTH: getVelocity().set(+0, +0, +4).scaleSelf(delta); break;
-                case WEST:  getVelocity().set(-4, +0, +0).scaleSelf(delta); break;
+                case NORTH:
+                    getVelocity().set(+0, +0, -4).scaleSelf(delta);
+                    break;
+                case EAST:
+                    getVelocity().set(+4, +0, +0).scaleSelf(delta);
+                    break;
+                case SOUTH:
+                    getVelocity().set(+0, +0, +4).scaleSelf(delta);
+                    break;
+                case WEST:
+                    getVelocity().set(-4, +0, +0).scaleSelf(delta);
+                    break;
             }
         else
         {

@@ -11,7 +11,7 @@ import com.shc.silenceengine.scene.entity.Entity3D;
  */
 public class Goal extends Entity3D
 {
-    private boolean growing = false;
+    private boolean growing  = false;
     private boolean accepted = false;
 
     private float scale = 1;

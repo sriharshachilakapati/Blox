@@ -141,6 +141,43 @@ public class PlayState extends GameState
         camera3.setPosition(camera3.getPosition().set(0, 70, 50).addSelf(camera2.getPosition())).lookAt(Vector3.ZERO);
     }
 
+    @Override
+    public void render(float delta, Batcher batcher)
+    {
+        Graphics2D g2d = SilenceEngine.graphics.getGraphics2D();
+
+        camera3.apply();
+        Resources.Models.EARTH.render(batcher, earthTransform);
+
+        camera2.apply();
+        level.render(delta);
+
+        g2d.setColor(Color.WHITE);
+        g2d.drawString(level.getMessage(), 10, 10);
+
+        String scoreString = String.format("%d PTAS", SCORE);
+        float x = Display.getWidth() - g2d.getFont().getWidth(scoreString) - 10;
+        float y = Display.getHeight() - g2d.getFont().getHeight() - 10;
+        g2d.drawString(scoreString, x, y);
+
+        if (freeCamera)
+        {
+            g2d.setColor(Color.RED);
+            g2d.drawRect(10, 10, Display.getWidth() - 20, Display.getHeight() - 20);
+            g2d.drawRect(9, 9, Display.getWidth() - 18, Display.getHeight() - 18);
+            g2d.drawString("FREE MODE", 20, Display.getHeight() - g2d.getFont().getHeight() - 20);
+        }
+    }
+
+    @Override
+    public void resize()
+    {
+        camera.initProjection(70, Display.getAspectRatio(), 1, 100);
+        camera2.initProjection(70, Display.getAspectRatio(), 1, 100);
+        camera3.initProjection(70, Display.getAspectRatio(), 1, 1000);
+        SilenceEngine.graphics.getGraphics2D().getCamera().initProjection(Display.getWidth(), Display.getHeight());
+    }
+
     private void updatePlayMode(float delta)
     {
         level.update(delta);
@@ -218,42 +255,5 @@ public class PlayState extends GameState
 
         if (Keyboard.isPressed(Keyboard.KEY_RIGHT))
             camera.rotateY(-45 * delta);
-    }
-
-    @Override
-    public void render(float delta, Batcher batcher)
-    {
-        Graphics2D g2d = SilenceEngine.graphics.getGraphics2D();
-
-        camera3.apply();
-        Resources.Models.EARTH.render(batcher, earthTransform);
-
-        camera2.apply();
-        level.render(delta);
-
-        g2d.setColor(Color.WHITE);
-        g2d.drawString(level.getMessage(), 10, 10);
-
-        String scoreString = String.format("%d PTAS", SCORE);
-        float x = Display.getWidth() - g2d.getFont().getWidth(scoreString) - 10;
-        float y = Display.getHeight() - g2d.getFont().getHeight() - 10;
-        g2d.drawString(scoreString, x, y);
-
-        if (freeCamera)
-        {
-            g2d.setColor(Color.RED);
-            g2d.drawRect(10, 10, Display.getWidth() - 20, Display.getHeight() - 20);
-            g2d.drawRect(9, 9, Display.getWidth() - 18, Display.getHeight() - 18);
-            g2d.drawString("FREE MODE", 20, Display.getHeight() - g2d.getFont().getHeight() - 20);
-        }
-    }
-
-    @Override
-    public void resize()
-    {
-        camera.initProjection(70, Display.getAspectRatio(), 1, 100);
-        camera2.initProjection(70, Display.getAspectRatio(), 1, 100);
-        camera3.initProjection(70, Display.getAspectRatio(), 1, 1000);
-        SilenceEngine.graphics.getGraphics2D().getCamera().initProjection(Display.getWidth(), Display.getHeight());
     }
 }

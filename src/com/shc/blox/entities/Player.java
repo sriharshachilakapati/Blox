@@ -17,10 +17,10 @@ public class Player extends Entity3D
 {
     private boolean canJump;
     private boolean inFall;
-    private boolean accepted = false;
+    private boolean accepted;
 
     private float jumpTo;
-    
+
     private Vector3 acceleration;
 
     public Player(Vector3 position)
@@ -30,7 +30,8 @@ public class Player extends Entity3D
 
         canJump = false;
         inFall = true;
-        
+        accepted = false;
+
         acceleration = new Vector3();
     }
 
@@ -43,7 +44,7 @@ public class Player extends Entity3D
             getVelocity().set(0);
             return;
         }
-        
+
         if (getPosition().y < -10)
             PlayState.SCORE -= PlayState.LEVEL * 50;
 
@@ -57,7 +58,7 @@ public class Player extends Entity3D
 
         // The axes to use for movement
         Vector3 forward = Vector3.REUSABLE_STACK.pop();
-        Vector3 right   = Vector3.REUSABLE_STACK.pop();
+        Vector3 right = Vector3.REUSABLE_STACK.pop();
 
         // Determine the axes based on camera direction
         switch (PlayState.cameraDirection)
@@ -81,7 +82,7 @@ public class Player extends Entity3D
                 forward.set(-1, 0, 0);
                 right.set(0, 0, -1);
         }
-        
+
         // Simple movement on the maze
         if (Keyboard.isPressed('W') || Controller.isPressed(PlayerController.BUTTON_DPAD_UP, 0))
             acceleration.addSelf(temp.set(forward).normalizeSelf().scaleSelf(2));
@@ -105,7 +106,7 @@ public class Player extends Entity3D
         Vector3.REUSABLE_STACK.push(forward);
         Vector3.REUSABLE_STACK.push(right);
 
-        // Jumping
+        // Jump initialization
         if (canJump && (Keyboard.isClicked(Keyboard.KEY_SPACE) || Controller.isClicked(PlayerController.BUTTON_JUMP, 0)))
         {
             canJump = false;
@@ -113,6 +114,7 @@ public class Player extends Entity3D
             jumpTo = getY() + 2;
         }
 
+        // Jumping
         if (!canJump && !inFall)
         {
             acceleration.addSelf(0, 12, 0);
@@ -123,37 +125,20 @@ public class Player extends Entity3D
 
         // Gravity
         acceleration.subtractSelf(0, 1, 0);
-        
+
         // Friction
         acceleration.x = applyFriction(acceleration.x, 0.5f);
         acceleration.y = applyFriction(acceleration.y, 0.5f);
         acceleration.z = applyFriction(acceleration.z, 0.5f);
-        
+
         // Limit acceleration
         acceleration.x = MathUtils.clamp(acceleration.x, -6, 6);
         acceleration.y = MathUtils.clamp(acceleration.y, -4, 4);
         acceleration.z = MathUtils.clamp(acceleration.z, -6, 6);
-        
+
         getVelocity().set(acceleration).scaleSelf(delta);
 
         canJump = false;
-    }
-    
-    private float applyFriction(float component, float friction)
-    {
-        if (component < 0 && component + friction > 0)
-            friction = component - friction;
-        
-        if (component > 0 && component - friction < 0)
-            friction = component + friction;
-        
-        if (component < 0)
-            component += friction;
-        
-        if (component > 0)
-            component -= friction;
-        
-        return component;
     }
 
     @Override
@@ -178,8 +163,6 @@ public class Player extends Entity3D
         {
             ((ThunderBall) other).accept(this);
             accepted = true;
-            
-            acceleration.set(0);
         }
 
         if (other instanceof Collect)
@@ -193,5 +176,22 @@ public class Player extends Entity3D
             PlayState.SCORE -= PlayState.LEVEL * 50;
             PlayState.reloadLevel();
         }
+    }
+
+    private float applyFriction(float component, float friction)
+    {
+        if (component < 0 && component + friction > 0)
+            friction = component - friction;
+
+        if (component > 0 && component - friction < 0)
+            friction = component + friction;
+
+        if (component < 0)
+            component += friction;
+
+        if (component > 0)
+            component -= friction;
+
+        return component;
     }
 }

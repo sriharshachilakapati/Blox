@@ -13,19 +13,19 @@ import com.shc.silenceengine.utils.TimeUtils;
 public class Spikes extends Entity3D
 {
     private float targetY;
-    
+
     public Spikes(Vector3 position)
     {
         this(position, true);
     }
-    
+
     public Spikes(Vector3 position, boolean moveDownAndUp)
     {
         super(Resources.Models.SPIKES, new Cuboid(position, 0.8f, 0.8f, 0.8f));
         setPosition(position);
-        
+
         targetY = position.y;
-        
+
         if (moveDownAndUp)
         {
             GameTimer moveTimer = new GameTimer(3, TimeUtils.Unit.SECONDS);
@@ -34,10 +34,10 @@ public class Spikes extends Entity3D
                 // Don't execute if destroyed
                 if (isDestroyed())
                     return;
-                
+
                 // Revert the target Y so that it moves down and up
                 targetY = (targetY > 0) ? -0.1f : 0.8f;
-                
+
                 // Start the timer again
                 moveTimer.start();
             });
