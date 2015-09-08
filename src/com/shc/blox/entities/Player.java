@@ -146,8 +146,40 @@ public class Player extends Entity3D
     {
         if (other instanceof Floor)
         {
-            setY(other.getY() + other.getHeight() / 2 + getHeight() / 2);
+            // Get the intersection dimensions so that we can implement good collision resolution
+            float xd = getBounds().getIntersectionWidth(other.getBounds());
+            float yd = getBounds().getIntersectionHeight(other.getBounds());
+            float zd = getBounds().getIntersectionThickness(other.getBounds());
 
+            // Don't let the player move into the floor from the sides
+            if (yd > getHeight() / 3 || getY() < other.getY())
+            {
+                if (xd > zd)
+                {
+                    // We intersected with either front or the back face of the Floor cube
+                    if (getZ() > other.getZ())
+                        setZ(other.getZ() + other.getThickness() / 2 + getThickness() / 2);
+                    else
+                        setZ(other.getZ() - other.getThickness() / 2 - getThickness() / 2);
+                }
+                else
+                {
+                    // We intersected with either left or the right face of the Floor cube
+                    if (getX() > other.getX())
+                        setX(other.getX() + other.getWidth() / 2 + getWidth() / 2);
+                    else
+                        setX(other.getX() - other.getWidth() / 2 - getWidth() / 2);
+                }
+
+                // Just return and don't save the player
+                return;
+            }
+
+            // Save the player, and keep him on the floor only when not on the edges
+            if (xd > getWidth() / 3 && zd > getThickness() / 3)
+                setY(other.getY() + other.getHeight() / 2 + getHeight() / 2);
+
+            // Reset Jump-control variables
             canJump = true;
             jumpTo = 0;
             inFall = false;
