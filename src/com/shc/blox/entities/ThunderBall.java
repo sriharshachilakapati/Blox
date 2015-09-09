@@ -97,6 +97,8 @@ public class ThunderBall extends Entity3D
             }
         else
         {
+            player.moveTo(getPosition(), 2 * delta);
+
             if (growing)
             {
                 scale += 4 * delta;

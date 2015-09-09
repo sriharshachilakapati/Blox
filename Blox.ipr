@@ -176,6 +176,9 @@
     <dictionary name="Harsha">
       <words>
         <w>blox</w>
+        <w>freemode</w>
+        <w>nheight</w>
+        <w>pheight</w>
         <w>ptas</w>
       </words>
     </dictionary>

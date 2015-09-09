@@ -31,6 +31,8 @@ public class Goal extends Entity3D
 
         if (accepted)
         {
+            player.moveTo(getPosition(), 2 * delta);
+
             if (growing)
             {
                 scale += 4 * delta;
