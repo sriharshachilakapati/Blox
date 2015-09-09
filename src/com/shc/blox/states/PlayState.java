@@ -2,6 +2,7 @@ package com.shc.blox.states;
 
 import com.shc.blox.Direction;
 import com.shc.blox.Level;
+import com.shc.blox.PlayerController;
 import com.shc.blox.Resources;
 import com.shc.blox.entities.CameraSwitch;
 import com.shc.blox.entities.Collect;
@@ -20,6 +21,8 @@ import com.shc.silenceengine.graphics.Batcher;
 import com.shc.silenceengine.graphics.Color;
 import com.shc.silenceengine.graphics.Graphics2D;
 import com.shc.silenceengine.graphics.cameras.PerspCam;
+import com.shc.silenceengine.graphics.models.Mesh;
+import com.shc.silenceengine.input.Controller;
 import com.shc.silenceengine.input.Keyboard;
 import com.shc.silenceengine.io.FilePath;
 import com.shc.silenceengine.math.Transform;
@@ -118,7 +121,7 @@ public class PlayState extends GameState
                 Display.showCursor();
         }
 
-        if (Keyboard.isClicked(Keyboard.KEY_TAB))
+        if (Keyboard.isClicked(Keyboard.KEY_TAB) || Controller.isClicked(PlayerController.BUTTON_FREEMODE, 0))
             freeCamera = !freeCamera;
 
         if (freeCamera)
@@ -147,7 +150,10 @@ public class PlayState extends GameState
         Graphics2D g2d = SilenceEngine.graphics.getGraphics2D();
 
         camera3.apply();
-        Resources.Models.EARTH.render(batcher, earthTransform);
+
+        // Render the static meshes of the Earth model
+        for (Mesh mesh : Resources.Models.EARTH.getMeshes())
+            SilenceEngine.graphics.getStaticMesh(mesh).render(earthTransform);
 
         camera2.apply();
         level.render(delta);
@@ -226,22 +232,22 @@ public class PlayState extends GameState
 
     private void updateFreeMode(float delta)
     {
-        if (Keyboard.isPressed('W'))
+        if (Keyboard.isPressed('W') || Controller.isPressed(PlayerController.BUTTON_DPAD_UP, 0))
             camera.moveForward(4 * delta);
 
-        if (Keyboard.isPressed('S'))
+        if (Keyboard.isPressed('S') || Controller.isPressed(PlayerController.BUTTON_DPAD_DOWN, 0))
             camera.moveBackward(4 * delta);
 
-        if (Keyboard.isPressed('A'))
+        if (Keyboard.isPressed('A') || Controller.isPressed(PlayerController.BUTTON_DPAD_LEFT, 0))
             camera.moveLeft(4 * delta);
 
-        if (Keyboard.isPressed('D'))
+        if (Keyboard.isPressed('D') || Controller.isPressed(PlayerController.BUTTON_DPAD_RIGHT, 0))
             camera.moveRight(4 * delta);
 
-        if (Keyboard.isPressed('Q'))
+        if (Keyboard.isPressed('Q') || Controller.isPressed(PlayerController.BUTTON_FREEMODE_PHEIGHT, 0))
             camera.moveUp(4 * delta);
 
-        if (Keyboard.isPressed('E'))
+        if (Keyboard.isPressed('E') || Controller.isPressed(PlayerController.BUTTON_FREEMODE_NHEIGHT, 0))
             camera.moveDown(4 * delta);
 
         if (Keyboard.isPressed(Keyboard.KEY_UP))
@@ -255,5 +261,8 @@ public class PlayState extends GameState
 
         if (Keyboard.isPressed(Keyboard.KEY_RIGHT))
             camera.rotateY(-45 * delta);
+
+        camera.rotateX(Controller.getAxe(PlayerController.AXE_RS_Y, 0) * 45 * delta);
+        camera.rotateY(Controller.getAxe(PlayerController.AXE_RS_X, 0) * 45 * delta);
     }
 }

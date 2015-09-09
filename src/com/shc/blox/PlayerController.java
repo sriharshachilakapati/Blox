@@ -14,9 +14,16 @@ public final class PlayerController
 
     public static int BUTTON_JUMP;
     public static int BUTTON_START;
+    public static int BUTTON_FREEMODE;
+
+    public static int BUTTON_FREEMODE_PHEIGHT;
+    public static int BUTTON_FREEMODE_NHEIGHT;
 
     public static int AXE_LS_X;
     public static int AXE_LS_Y;
+
+    public static int AXE_RS_X;
+    public static int AXE_RS_Y;
 
     public static void map()
     {
@@ -38,9 +45,16 @@ public final class PlayerController
 
                 BUTTON_JUMP = Controller.GENERIC_BUTTON_3;
                 BUTTON_START = Controller.GENERIC_BUTTON_START;
+                BUTTON_FREEMODE = Controller.GENERIC_BUTTON_1;
+
+                BUTTON_FREEMODE_NHEIGHT = Controller.GENERIC_BUTTON_5;
+                BUTTON_FREEMODE_PHEIGHT = Controller.GENERIC_BUTTON_6;
 
                 AXE_LS_X = Controller.GENERIC_AXE_LEFT_X;
                 AXE_LS_Y = Controller.GENERIC_AXE_LEFT_Y;
+
+                AXE_RS_X = Controller.GENERIC_AXE_RIGHT_X;
+                AXE_RS_Y = Controller.GENERIC_AXE_RIGHT_Y;
                 break;
 
             case XBOX:
@@ -51,9 +65,16 @@ public final class PlayerController
 
                 BUTTON_JUMP = Controller.XBOX_BUTTON_B;
                 BUTTON_START = Controller.XBOX_BUTTON_START;
+                BUTTON_FREEMODE = Controller.XBOX_BUTTON_Y;
+
+                BUTTON_FREEMODE_NHEIGHT = Controller.XBOX_BUTTON_LB;
+                BUTTON_FREEMODE_PHEIGHT = Controller.XBOX_BUTTON_RB;
 
                 AXE_LS_X = Controller.XBOX_LEFT_STICKER_X;
                 AXE_LS_Y = Controller.XBOX_LEFT_STICKER_Y;
+
+                AXE_RS_X = Controller.XBOX_RIGHT_STICKER_X;
+                AXE_RS_Y = Controller.XBOX_RIGHT_STICKER_Y;
                 break;
         }
     }
