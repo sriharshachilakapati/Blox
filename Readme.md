@@ -34,7 +34,7 @@ __The FREE MODE__
 
 ![Free-Mode](http://i.imgur.com/x6OmQWL.png)
 
-The FREE MODE is a way that allows you to take a look at the level. You switch to the free mode using the TAB key on keyboard, or the BUTTON 1 or **?** button or the **Y** button depending on the controller. Here the game stops to update, I mean, you'll make the world freeze and move with freedom in the world. You can return to the game from the same point by hitting the TAB key again.
+The FREE MODE is a way that allows you to take a look at the level. You switch to the free mode using the TAB key on keyboard, or the BUTTON 1 or **△** button or the **Y** button depending on the controller. Here the game stops to update, I mean, you'll make the world freeze and move with freedom in the world. You can return to the game from the same point by hitting the TAB key again.
 
 __The Spikes__
 
