@@ -152,9 +152,9 @@ public class Player extends Entity3D
             float zd = getBounds().getIntersectionThickness(other.getBounds());
 
             // Don't let the player move into the floor from the sides
-            if (yd > getHeight() / 3 || getY() < other.getY())
+            if (yd > getHeight() / 4 || getY() < other.getY())
             {
-                if (xd > zd)
+                if (xd >= zd)
                 {
                     // We intersected with either front or the back face of the Floor cube
                     if (getZ() > other.getZ())
@@ -162,7 +162,8 @@ public class Player extends Entity3D
                     else
                         setZ(other.getZ() - other.getThickness() / 2 - getThickness() / 2);
                 }
-                else
+
+                if (xd <= zd)
                 {
                     // We intersected with either left or the right face of the Floor cube
                     if (getX() > other.getX())
