@@ -63,7 +63,7 @@ public final class PlayerController
                 BUTTON_DPAD_LEFT = Controller.XBOX_DPAD_LEFT;
                 BUTTON_DPAD_RIGHT = Controller.XBOX_DPAD_RIGHT;
 
-                BUTTON_JUMP = Controller.XBOX_BUTTON_B;
+                BUTTON_JUMP = Controller.XBOX_BUTTON_A;
                 BUTTON_START = Controller.XBOX_BUTTON_START;
                 BUTTON_FREEMODE = Controller.XBOX_BUTTON_Y;
 
