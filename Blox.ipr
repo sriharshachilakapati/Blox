@@ -182,6 +182,7 @@
         <w>nheight</w>
         <w>pheight</w>
         <w>ptas</w>
+        <w>verts</w>
       </words>
     </dictionary>
   </component>
