@@ -21,7 +21,6 @@ import com.shc.silenceengine.graphics.Batcher;
 import com.shc.silenceengine.graphics.Color;
 import com.shc.silenceengine.graphics.Graphics2D;
 import com.shc.silenceengine.graphics.cameras.PerspCam;
-import com.shc.silenceengine.graphics.models.Mesh;
 import com.shc.silenceengine.input.Controller;
 import com.shc.silenceengine.input.Keyboard;
 import com.shc.silenceengine.io.FilePath;
@@ -106,7 +105,11 @@ public class PlayState extends GameState
     @Override
     public void update(float delta)
     {
-        Display.setTitle("UPS: " + Game.getUPS() + " | FPS: " + Game.getFPS() + " | RC: " + SilenceEngine.graphics.renderCallsPerFrame);
+        Display.setTitle("UPS: " + Game.getUPS() +
+                         " | FPS: " + Game.getFPS() +
+                         " | RC: " + SilenceEngine.graphics.renderCallsPerFrame +
+                         " | BS: " + SilenceEngine.graphics.getBatcher().getBatchSize() + " verts" +
+                         " | MBS: " + SilenceEngine.graphics.getBatcher().getMaxBatchSize() + " verts");
 
         if (Keyboard.isClicked(Keyboard.KEY_ESCAPE))
             Game.end();
@@ -151,9 +154,8 @@ public class PlayState extends GameState
 
         camera3.apply();
 
-        // Render the static meshes of the Earth model
-        for (Mesh mesh : Resources.Models.EARTH.getMeshes())
-            SilenceEngine.graphics.getStaticMesh(mesh).render(earthTransform);
+        // Render the static earth model
+        Resources.Models.EARTH.render(earthTransform);
 
         camera2.apply();
         level.render(delta);
