@@ -21,12 +21,18 @@ public class ThunderBall extends Entity3D
     private boolean growing;
     private Player  player;
 
+    private Vector3 originalPos;
+
     private float scale = 1;
+
+    private GameTimer timer;
 
     public ThunderBall(Vector3 position, Direction direction)
     {
         super(Resources.Models.SPHERE2, new Sphere(position, 0.5f));
         velocityDir = direction;
+
+        originalPos = new Vector3(position);
 
         switch (velocityDir)
         {
@@ -44,12 +50,9 @@ public class ThunderBall extends Entity3D
                 break;
         }
 
-        GameTimer timer = new GameTimer(1.5, TimeUtils.Unit.SECONDS);
+        timer = new GameTimer(1.5, TimeUtils.Unit.SECONDS);
         timer.setCallback(() ->
         {
-            if (isDestroyed() || accepted)
-                return;
-
             switch (velocityDir)
             {
                 case NORTH:
@@ -65,8 +68,6 @@ public class ThunderBall extends Entity3D
                     velocityDir = Direction.EAST;
                     break;
             }
-
-            timer.start();
         });
         timer.start();
     }
@@ -79,48 +80,79 @@ public class ThunderBall extends Entity3D
 
         getVelocity().set(0);
 
-        if (!accepted)
+        if (PlayState.isFreeCamera())
+            timer.stop();
+        else if (!timer.isActive() && !accepted)
+        {
+            Vector3 position = Vector3.REUSABLE_STACK.pop();
+
+            // Move to the extreme position and then start the timer again
             switch (velocityDir)
             {
                 case NORTH:
-                    getVelocity().set(+0, +0, -4).scaleSelf(delta);
+                    position.set(+0, +0, +3).addSelf(originalPos);
                     break;
                 case EAST:
-                    getVelocity().set(+4, +0, +0).scaleSelf(delta);
+                    position.set(-3, +0, +0).addSelf(originalPos);
                     break;
                 case SOUTH:
-                    getVelocity().set(+0, +0, +4).scaleSelf(delta);
+                    position.set(+0, +0, -3).addSelf(originalPos);
                     break;
                 case WEST:
-                    getVelocity().set(-4, +0, +0).scaleSelf(delta);
+                    position.set(+3, +0, +0).addSelf(originalPos);
                     break;
             }
+
+            if (moveTo(position, 4 * delta))
+                timer.start();
+
+            Vector3.REUSABLE_STACK.push(position);
+        }
         else
         {
-            player.moveTo(getPosition(), 2 * delta);
-
-            if (growing)
-            {
-                scale += 4 * delta;
-                setScale(scale, scale, scale);
-
-                if (scale > 3)
+            if (!accepted)
+                switch (velocityDir)
                 {
-                    player.destroy();
-                    growing = false;
+                    case NORTH:
+                        getVelocity().set(+0, +0, -4).scaleSelf(delta);
+                        break;
+                    case EAST:
+                        getVelocity().set(+4, +0, +0).scaleSelf(delta);
+                        break;
+                    case SOUTH:
+                        getVelocity().set(+0, +0, +4).scaleSelf(delta);
+                        break;
+                    case WEST:
+                        getVelocity().set(-4, +0, +0).scaleSelf(delta);
+                        break;
                 }
-            }
             else
             {
-                scale -= 4 * delta;
-                setScale(scale, scale, scale);
+                player.moveTo(getPosition(), 2 * delta);
 
-                if (scale < 0.1)
+                if (growing)
                 {
-                    PlayState.SCORE -= PlayState.LEVEL * 50;
+                    scale += 4 * delta;
+                    setScale(scale, scale, scale);
 
-                    destroy();
-                    PlayState.reloadLevel();
+                    if (scale > 3)
+                    {
+                        player.destroy();
+                        growing = false;
+                    }
+                }
+                else
+                {
+                    scale -= 4 * delta;
+                    setScale(scale, scale, scale);
+
+                    if (scale < 0.1)
+                    {
+                        PlayState.SCORE -= PlayState.LEVEL * 50;
+
+                        destroy();
+                        PlayState.reloadLevel();
+                    }
                 }
             }
         }

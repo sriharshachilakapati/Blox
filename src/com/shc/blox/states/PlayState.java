@@ -38,7 +38,7 @@ public class PlayState extends GameState
 
     public static Direction cameraDirection;
 
-    public static int LEVEL = 1;
+    public static int LEVEL = 4;
     public static int SCORE = 0;
 
     private Level level;
@@ -60,6 +60,11 @@ public class PlayState extends GameState
         camera3.setPosition(new Vector3(0, 70, 50)).lookAt(Vector3.ZERO);
 
         loadLevel("levels/level" + LEVEL + ".lvl");
+    }
+
+    public static boolean isFreeCamera()
+    {
+        return freeCamera;
     }
 
     public static void nextLevel()
@@ -125,7 +130,12 @@ public class PlayState extends GameState
         }
 
         if (Keyboard.isClicked(Keyboard.KEY_TAB) || Controller.isClicked(PlayerController.BUTTON_FREEMODE, 0))
+        {
             freeCamera = !freeCamera;
+
+            // Update as play mode to notify ThunderBalls
+            updatePlayMode(delta);
+        }
 
         if (freeCamera)
             updateFreeMode(delta);
