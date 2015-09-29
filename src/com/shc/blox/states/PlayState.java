@@ -38,7 +38,7 @@ public class PlayState extends GameState
 
     public static Direction cameraDirection;
 
-    public static int LEVEL = 4;
+    public static int LEVEL = 1;
     public static int SCORE = 0;
 
     private Level level;
@@ -110,24 +110,8 @@ public class PlayState extends GameState
     @Override
     public void update(float delta)
     {
-        Display.setTitle("UPS: " + Game.getUPS() +
-                         " | FPS: " + Game.getFPS() +
-                         " | RC: " + SilenceEngine.graphics.renderCallsPerFrame +
-                         " | BS: " + SilenceEngine.graphics.getBatcher().getBatchSize() + " verts" +
-                         " | MBS: " + SilenceEngine.graphics.getBatcher().getMaxBatchSize() + " verts");
-
         if (Keyboard.isClicked(Keyboard.KEY_ESCAPE))
-            Game.end();
-
-        if (Keyboard.isClicked(Keyboard.KEY_F1))
-        {
-            Display.setFullScreen(!Display.isFullScreen());
-
-            if (Display.isFullScreen())
-                Display.hideCursor();
-            else
-                Display.showCursor();
-        }
+            Game.setGameState(new IntroState());
 
         if (Keyboard.isClicked(Keyboard.KEY_TAB) || Controller.isClicked(PlayerController.BUTTON_FREEMODE, 0))
         {
@@ -161,6 +145,7 @@ public class PlayState extends GameState
     public void render(float delta, Batcher batcher)
     {
         Graphics2D g2d = SilenceEngine.graphics.getGraphics2D();
+        g2d.setFont(Resources.Fonts.HUD_FONT);
 
         camera3.apply();
 

@@ -3,6 +3,7 @@ package com.shc.blox;
 import com.shc.silenceengine.core.ResourceLoader;
 import com.shc.silenceengine.core.SilenceEngine;
 import com.shc.silenceengine.graphics.Color;
+import com.shc.silenceengine.graphics.IFont;
 import com.shc.silenceengine.graphics.TrueTypeFont;
 import com.shc.silenceengine.graphics.models.Model;
 
@@ -44,8 +45,10 @@ public final class Resources
         Models.EARTH.getMeshes().get(0).getMaterial().setAmbient(Color.GRAY);
         Models.EARTH.setPrefersStatic(true);
 
-        TrueTypeFont font = ((TrueTypeFont) loader.getResource(fontBloxID)).setSize(30);
-        SilenceEngine.graphics.getGraphics2D().setFont(font);
+        Fonts.HUD_FONT = ((TrueTypeFont) loader.getResource(fontBloxID)).setSize(30);
+        Fonts.TITLE_FONT = ((TrueTypeFont) Fonts.HUD_FONT).copy().setSize(200);
+
+        SilenceEngine.graphics.getGraphics2D().setFont(Fonts.HUD_FONT);
     }
 
     public static void dispose()
@@ -63,5 +66,11 @@ public final class Resources
         public static Model COLLECT;
         public static Model SPIKES;
         public static Model EARTH;
+    }
+
+    public static final class Fonts
+    {
+        public static IFont HUD_FONT;
+        public static IFont TITLE_FONT;
     }
 }

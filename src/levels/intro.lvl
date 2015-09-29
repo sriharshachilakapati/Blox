@@ -1,0 +1,24 @@
+# P stands for Player
+# F stands for Floor
+# N stands for Cone pointing North
+# E stands for Cone pointing East
+# W stands for Cone pointing West
+# S stands for Cone pointing South
+# G stands for goal sphere
+# C stands for a collectible
+# T stands for ThunderBall moving North and South
+# t stands for ThunderBall moving East and West
+# X stands for Spikes
+
+FFF                 FFFXG
+FSF  X     FEF    FF
+FFF        FCFF  FF
+ t        FF
+         FNF       FFF
+ F       FXFF  T  FFXCWF
+ F                 FFF
+ F
+ F                    F
+FFF     FF            FF
+FEFF C FFFFF C FFF    FNF
+FFF     FF            FFF
