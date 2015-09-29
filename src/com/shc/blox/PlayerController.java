@@ -34,6 +34,25 @@ public final class PlayerController
         switch (controller.getType())
         {
             case PS3:
+                BUTTON_DPAD_UP = Controller.PS3_DPAD_UP;
+                BUTTON_DPAD_DOWN = Controller.PS3_DPAD_DOWN;
+                BUTTON_DPAD_LEFT = Controller.PS3_DPAD_LEFT;
+                BUTTON_DPAD_RIGHT = Controller.PS3_DPAD_RIGHT;
+
+                BUTTON_JUMP = Controller.PS3_BUTTON_CROSS;
+                BUTTON_START = Controller.PS3_BUTTON_START;
+                BUTTON_FREEMODE = Controller.PS3_BUTTON_TRIANGLE;
+
+                BUTTON_FREEMODE_NHEIGHT = Controller.PS3_BUTTON_L1;
+                BUTTON_FREEMODE_PHEIGHT = Controller.PS3_BUTTON_R1;
+
+                AXE_LS_X = Controller.PS3_AXE_LS_X;
+                AXE_LS_Y = Controller.PS3_AXE_LS_Y;
+
+                AXE_RS_X = Controller.PS3_AXE_RS_X;
+                AXE_RS_Y = Controller.PS3_AXE_RS_Y;
+                break;
+
             case PS4:
                 System.err.println("You are using a non-recognized controller, so the buttons may not work as expected.");
 
