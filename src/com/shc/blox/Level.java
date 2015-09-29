@@ -23,6 +23,8 @@ public final class Level
     private Player    player;
     private Direction initialDirection;
 
+    private Vector3 center;
+
     private Level()
     {
     }
@@ -144,7 +146,17 @@ public final class Level
             x = 0;
         }
 
+        x -= x / 2;
+        z -= z / 2;
+
+        level.center = new Vector3(x, 0, z);
+
         return level;
+    }
+
+    public Vector3 getCenter()
+    {
+        return center;
     }
 
     public void update(float delta)
