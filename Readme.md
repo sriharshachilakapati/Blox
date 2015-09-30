@@ -44,6 +44,10 @@ The Spikes are the second type of the enemies you will be facing. These go insid
 
 __Youtube Video:__
 
+[![Youtube Intro dev log](http://img.youtube.com/vi/aKrhGGMYTxw/0.jpg)](http://www.youtube.com/watch?v=aKrhGGMYTxw)
+
+This video is the dev log which shows the new intro screen in action. The intro screen shows a demo level with the camera moving between different pre configured points.
+
 [![Youtube game play video](http://img.youtube.com/vi/XfOYCTV72wk/0.jpg)](http://www.youtube.com/watch?v=XfOYCTV72wk)
 
 This video is an early dev log of the game which happens to just have the core mechanics, the platforms, and the player controls.
