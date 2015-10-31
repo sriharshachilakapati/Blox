@@ -18,23 +18,31 @@ import com.shc.silenceengine.scene.lights.PointLight;
 import com.shc.silenceengine.utils.GameTimer;
 import com.shc.silenceengine.utils.TimeUtils;
 
+import java.awt.*;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
+
 /**
  * @author Sri Harsha Chilakapati
  */
 public class IntroState extends GameState
 {
-    private static Vector3[]  demoPts;
-    private final  PointLight camLight;
+    private final PointLight camLight;
 
-    private PerspCam gameCam;
-    private PerspCam viewCam;
-    private PerspCam earthCam;
+    private Vector3[] demoPts;
+    private PerspCam  gameCam;
+    private PerspCam  viewCam;
+    private PerspCam  earthCam;
 
     private Transform earthTransform;
 
     private Level level;
 
     private int currentPointIndex;
+    private int currentMenuIndex;
+
+    private MenuOption[] menuOptions;
 
     public IntroState()
     {
@@ -71,6 +79,10 @@ public class IntroState extends GameState
                         new Vector3(25, 7, 20),
                         new Vector3(30, 7, 15)
                 };
+
+        // The menu options, this contains all the options
+        menuOptions = MenuOption.values();
+        currentMenuIndex = 0;
     }
 
     @Override
@@ -79,8 +91,37 @@ public class IntroState extends GameState
         if (Keyboard.isClicked(Keyboard.KEY_ESCAPE))
             Game.end();
 
-        if (Keyboard.isClicked(Keyboard.KEY_SPACE))
-            Game.setGameState(new PlayState());
+        if (Keyboard.isClicked(Keyboard.KEY_SPACE) || Keyboard.isClicked(Keyboard.KEY_ENTER))
+        {
+            switch (menuOptions[currentMenuIndex])
+            {
+                case PLAY:
+                    Game.setGameState(new PlayState());
+                    break;
+
+                case ABOUT:
+                    try
+                    {
+                        if (Desktop.isDesktopSupported())
+                            Desktop.getDesktop().browse(new URL("https://github.com/sriharshachilakapati/Blox/").toURI());
+                    }
+                    catch (IOException | URISyntaxException e)
+                    {
+                        e.printStackTrace();
+                    }
+                    break;
+
+                case QUIT:
+                    Game.end();
+                    break;
+            }
+        }
+
+        if (Keyboard.isClicked(Keyboard.KEY_RIGHT))
+            currentMenuIndex = (currentMenuIndex + 1) % menuOptions.length;
+
+        if (Keyboard.isClicked(Keyboard.KEY_LEFT))
+            currentMenuIndex = (currentMenuIndex + menuOptions.length - 1) % menuOptions.length;
 
         level.update(delta);
 
@@ -114,7 +155,7 @@ public class IntroState extends GameState
             title = title.toLowerCase();
 
         float x = Display.getWidth() / 2 - g2d.getFont().getWidth(title) / 2;
-        float y = Display.getHeight() / 2 - g2d.getFont().getHeight() / 2;
+        float y = 150;
 
         g2d.setColor(Color.BURLY_WOOD);
         g2d.drawString(title, x, y);
@@ -124,11 +165,22 @@ public class IntroState extends GameState
         g2d.setColor(Color.GRAY);
         g2d.setFont(Resources.Fonts.HUD_FONT);
 
-        String message = "press SPACE to start";
+        String message = "press SPACE to select";
         x = Display.getWidth() / 2 - g2d.getFont().getWidth(message) / 2;
         y = Display.getHeight() - g2d.getFont().getHeight() - 50;
 
         g2d.drawString(message, x, y);
+
+        g2d.setColor(Color.DARK_SLATE_GRAY);
+        g2d.setFont(Resources.Fonts.MENU_FONT);
+
+        message = "< " + menuOptions[currentMenuIndex].getMessage() + " >";
+        x = Display.getWidth() / 2 - g2d.getFont().getWidth(message) / 2;
+        y = Display.getHeight() - g2d.getFont().getHeight() - 100;
+
+        g2d.drawString(message, x - 1, y - 1);
+        g2d.setColor(Color.LIGHT_GRAY);
+        g2d.drawString(message, x + 1, y + 1);
     }
 
     @Override
@@ -144,5 +196,24 @@ public class IntroState extends GameState
     public void onLeave()
     {
         level.destroy();
+    }
+
+    private enum MenuOption
+    {
+        PLAY("Play the Game"),
+        ABOUT("About"),
+        QUIT("Quit");
+
+        private String message;
+
+        MenuOption(String message)
+        {
+            this.message = message;
+        }
+
+        public String getMessage()
+        {
+            return message;
+        }
     }
 }

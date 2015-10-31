@@ -47,6 +47,7 @@ public final class Resources
 
         Fonts.HUD_FONT = ((TrueTypeFont) loader.getResource(fontBloxID)).setSize(30);
         Fonts.TITLE_FONT = ((TrueTypeFont) Fonts.HUD_FONT).copy().setSize(200);
+        Fonts.MENU_FONT = ((TrueTypeFont) Fonts.HUD_FONT).derive(30, TrueTypeFont.STYLE_BOLD);
 
         SilenceEngine.graphics.getGraphics2D().setFont(Fonts.HUD_FONT);
     }
@@ -72,5 +73,6 @@ public final class Resources
     {
         public static IFont HUD_FONT;
         public static IFont TITLE_FONT;
+        public static IFont MENU_FONT;
     }
 }
